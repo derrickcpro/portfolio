@@ -426,7 +426,7 @@ const CARDS = [
   {
     /* -------------------------- MONTANA ARTS COUNCIL -------------- */
     title: "Montana Arts Council",
-    epithet: "The Map",
+    epithet: "Case Study",
     note: "An art directory that lets artists across a very large state find each other.",
     meta: "Design Intern · 2026",
     Art: ArtMap,
@@ -467,24 +467,24 @@ const CARDS = [
   {
     /* ---------------------------- EPATT --------------------------- */
     title: "East Palo Alto Tennis",
-    epithet: "The Hour",
+    epithet: "Class Project",
     note: "A productivity tool fueled by AI, giving lesson planners their evenings back.",
-    meta: "Design · 2026 · CS52: Design for Social Good",
+    meta: "Design · 2026",
     Art: ArtTennis,
     float: "cc-float-2",
     lift: "2.5rem",
     variant: "gallery",
-    role: "Design · team of six · CS52",
+    role: "Design · team of six",
     /* TODO: no url supplied for this one yet — paste the case-study link here. */
     readMore: { label: "View Slide Deck", href: "https://canva.link/8ife551eo5ca010" },
     credits: [
       { label: "Timeline", value: "January – March 2026" },
-      { label: "Course", value: "CS52: Design for Social Good" },
       { label: "Product manager", value: "Asharah Jaman" },
       { label: "Designers", value: "Derrick Chen, Chloe Zhong, Sophia Jiang, Sky Flowers, Annie Lee" },
     ],
     summary: [
-      "East Palo Alto Tennis and Tutoring equips youth for college and career pathways through one-on-one tutoring, parent empowerment, enrichment, mentorship, coaching, and tennis instruction. Teachers at EPATT oversee several tutors, each paired with a student, with a coaching layer running alongside — and that teacher is the bottleneck. To personalize plans for up to a hundred students, they cross between IXL, Achieve3000, and iReady, aggregating by hand. I led our team through the end-to-end UX cycle to ship them a design of a product that helps them solve their need for efficient, productive management tools.",
+      "East Palo Alto Tennis and Tutoring equips youth for college and career pathways through one-on-one tutoring, parent empowerment, enrichment, mentorship, coaching, and tennis instruction. Teachers at EPATT manage up to 100 students and their volunteer tutors to personalize study plans for each student.",
+      "Through the design process, I worked to interview key stakeholders and clients to pinpoint their needs and pain points. From there, I shared these insights as user personas that I prototyped alongside my peers to deliver a design of a productivity tool to help teachers manage all their students with the help of an AI tool.",
     ],
     tags: ["UX Research", "Need-finding", "AI Tooling", "Prototyping", "Product Design", "Figma"],
     link: null,
@@ -511,9 +511,9 @@ const CARDS = [
   {
     /* -------------------------- SAP-A-SKILL ----------------------- */
     title: "Sap-a-Skill",
-    epithet: "The Sprout",
+    epithet: "Personal Project",
     note: "Teach a sapling what you picked up, and watch it grow as you do.",
-    meta: "Claude project · PRD + screens",
+    meta: "Claude Project 2026",
     Art: ArtSprout,
     float: "cc-float-3",
     lift: "0.75rem",
@@ -524,12 +524,8 @@ const CARDS = [
       { label: "Scope", value: "Education" },
     ],
     summary: [
-      "**Context**:",
-      "As a learner, my notebooks piled on my desk where I multi-task taking notes, screenshotting them down, and switching between paper and digital. Notetaking became a space for me to feel like I was actively learning during lecture — but those notes never surfaced up again.",
-      "Learning felt like jumping into an endless hole and not knowing where I ended up. I was documenting things, but not reflecting more on them. I felt that there lacked any evidence to my learning and nothing solidified for me. While watching an Eileen Gu video she mentioned things that stood out to me: \u201cEvidence over, affirmation.\u201d",
-      "Inspired by her quote, I knew I wanted something that showed me evidence of my learning and utilized research backed techniques to study, like the technique where you teach others (Feynman technique). I looked into my favorite RPG games and skill trees stood out to me, everytime you worked on your goal you gained skill points to gain abilities.",
-      "So, I created Sap-a-Skill, where it functioned similar to character skill trees enhancing a skill. Instead you adopt a sapling that you name after the skill you learn, grow the sapling by teaching it new things you learn and watch the sapling grow after you make progress.",
-      "When you reflect, you know there is evidence to your learning from your trees!",
+      "Sap-a-Skill is a journaling learning tool designed to help the every day learner document their learning in a way that provides evidence to their progress. When learners want to learn a skill they adopt a sapling that they can help grow when they start a new skill, hobby, or lecture material. Learners can directly see their learning progress with each session the sapling grows as they retrieve their new findings.",
+      "Learners can log into the application at the end of each day, a eureka moment, or after a duolingo lesson, to map on their progress of any findings they have had. Watch as the sapling grow with each step you take to document your learning journey!",
     ],
     tags: ["Product Requirements", "Product Design", "Ed Tech", "Conversational UI", "Prompt Design", "Solo Build"],
     link: { label: "View on GitHub", href: "#" },
@@ -559,7 +555,7 @@ const CARDS = [
   {
     /* ------------------------- SILVERSMITHING --------------------- */
     title: "Silversmithing Project",
-    epithet: "The Silver",
+    epithet: "Personal Project",
     note: "Rings and pendants, forged and finished by hand at the bench.",
     meta: "Sterling · 2025",
     Art: ArtSilver,
@@ -761,7 +757,7 @@ export default function ClowCardPortfolio() {
             <div className="cc-seal cc-seal-outer" />
             <div className="cc-seal cc-seal-inner" />
             <div className="relative" style={{ zIndex: 1 }}>
-              <p className="cc-eyebrow">Product design · Stanford HCI</p>
+              <p className="cc-eyebrow">Stanford HCI · Class 2028</p>
               <h1 className="cc-name">
                 Hi, I&rsquo;m<span className="cc-name-break"> </span>Derrick.
               </h1>
@@ -799,7 +795,7 @@ export default function ClowCardPortfolio() {
         <div className="relative w-full mx-auto" style={{ zIndex: 1, maxWidth: "72rem" }}>
           <div className={`cc-reveal ${galleryIn ? "cc-in" : ""}`}>
             <p className="cc-eyebrow cc-eyebrow-left">The collection</p>
-            <h2 className="cc-h2">Case Studies</h2>
+            <h2 className="cc-h2">Projects</h2>
             <p className="cc-lede">
               Each card holds one project: what it was for, who it was for, and what changed once it shipped.
             </p>
@@ -881,7 +877,7 @@ export default function ClowCardPortfolio() {
 
 /* Drop a square 1:1 photo here, around 800px. Until it exists the frame
    shows the monogram — the same silent fallback the slides use. */
-const PHOTO = { src: "images/derrick-square.jpg", alt: "Derrick Chen", monogram: "DC" };
+const PHOTO = { src: "images/derrick-square.jpeg", alt: "Derrick Chen", monogram: "DC" };
 
 /* GROUP is the resting card plus its prompt, measured top to bottom:
    card (133) + gap (34) + words and chevron (~92) + top offset (~46).
@@ -898,6 +894,27 @@ const REACH = [
         <circle cx="8" cy="8.6" r="1.1" className="cc-glyph-fill" />
         <path d="M8 11.6 L8 17.5" />
         <path d="M12 17.5 L12 11.6 M12 14.2 Q12 11.6 14.6 11.6 Q16.6 11.6 16.6 14.4 L16.6 17.5" />
+      </svg>
+    ),
+  },
+  {
+    label: "Email",
+    href: "mailto:djchen@stanford.edu",
+    reveal: "djchen@stanford.edu",
+    /* sealed */
+    glyph: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+        <path d="M3.5 6.5 L12 13 L20.5 6.5" />
+      </svg>
+    ),
+    /* opened — flap up, letter showing */
+    glyphOpen: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="7" y="3" width="10" height="8.5" rx="1" />
+        <path d="M9.2 5.6 L14.8 5.6 M9.2 8 L13 8" />
+        <path d="M3 10.5 L3 19 Q3 20.2 4.2 20.2 L19.8 20.2 Q21 20.2 21 19 L21 10.5" />
+        <path d="M3 10.5 L12 16.4 L21 10.5" />
       </svg>
     ),
   },
@@ -923,6 +940,7 @@ function Connect() {
   const [manual, setManual] = useState(null);
   const [box, setBox] = useState({ w: 1200, h: 440 });
   const [imgFailed, setImgFailed] = useState(false);
+  const [mailOpen, setMailOpen] = useState(false);
 
   const stageRef = useRef(null);
   const manualRef = useRef(null);
@@ -1006,9 +1024,9 @@ function Connect() {
      panel stacks, so it needs considerably more height. */
   const stacked = box.w < 640;
   const endH = clamp(
-    box.h * (stacked ? 0.78 : 0.76),
-    stacked ? 480 : 360,
-    stacked ? 540 : 470
+    box.h * (stacked ? 0.86 : 0.62),
+    stacked ? 610 : 430,
+    stacked ? 700 : 520
   );
   /* Internal spacing scales with the band so the contents keep their
      proportions instead of rattling around in a taller box. */
@@ -1108,19 +1126,56 @@ function Connect() {
           </div>
 
           <div className="cc-cx-say">
-            <h2 className="cc-cx-title">Let&rsquo;s Connect</h2>
+            <h2 className="cc-cx-title">About Me</h2>
             <p className="cc-cx-line">
-              Product design &middot; Stanford HCI. Open to internships and new grad roles.
+              Stanford HCI &middot; Class 2028. Open to internships and new grad roles.
+            </p>
+            <p className="cc-cx-bio">
+              I&rsquo;m Derrick and I study Computer Science on the Human Centered
+              Interaction track. My values in all the work I do prioritize curiosity,
+              empathy and intercultural communication. All of which I believe are
+              important to understanding users and creating solutions that align with
+              their needs. Aside from those, I love reading and engaging with art,
+              inspiring my next silversmithing project!
             </p>
             <div className="cc-cx-btns">
-              {REACH.map((r) => (
-                <a key={r.label} className="cc-glass-btn" href={r.href} target="_blank" rel="noopener noreferrer">
-                  <span className="cc-glass-glyph">{r.glyph}</span>
-                  {r.label}
-                </a>
-              ))}
+              {REACH.map((r) => {
+                /* The mail button reveals the address on first click and only
+                   hands off to the mail client on the second, so nobody has to
+                   launch an app just to read it. */
+                if (r.reveal) {
+                  return (
+                    <a
+                      key={r.label}
+                      className={`cc-glass-btn cc-mail ${mailOpen ? "cc-mail-open" : ""}`}
+                      href={r.href}
+                      aria-label={mailOpen ? `Send mail to ${r.reveal}` : "Show my email address"}
+                      onClick={(e) => {
+                        if (!mailOpen) {
+                          e.preventDefault();
+                          setMailOpen(true);
+                        }
+                      }}
+                    >
+                      <span className="cc-glass-glyph">{mailOpen ? r.glyphOpen : r.glyph}</span>
+                      {mailOpen ? r.reveal : r.label}
+                    </a>
+                  );
+                }
+                return (
+                  <a
+                    key={r.label}
+                    className="cc-glass-btn"
+                    href={r.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="cc-glass-glyph">{r.glyph}</span>
+                    {r.label}
+                  </a>
+                );
+              })}
             </div>
-            <a className="cc-connect-mail" href="mailto:djchen@stanford.edu">djchen@stanford.edu</a>
           </div>
 
           <button type="button" className="cc-startop" onClick={toTop} aria-label="Back to top">
@@ -1909,7 +1964,7 @@ const CSS = `
   /* Tall enough that the card is fully settled with scroll still remaining —
      that leftover scroll is the confirmation gesture. The card travels down
      through this space rather than it sitting empty. */
-  height: clamp(34rem, 62vh, 40rem);
+  height: clamp(38rem, 68vh, 46rem);
   background: linear-gradient(180deg,
     rgba(10,25,47,0) 0%,
     rgba(16,34,64,.62) 32%,
@@ -1973,6 +2028,8 @@ const CSS = `
   grid-template-columns:auto minmax(0,1fr) auto;
   gap: clamp(1.4rem, 5vw, 4rem);
   padding: 0 clamp(1.4rem,4vw,3.5rem); /* vertical padding is set inline, scaled to band height */
+  /* If a very short viewport still can't fit the bio, scroll rather than clip. */
+  overflow-y:auto; overscroll-behavior:contain;
 }
 .cc-cx-shot {
   position:relative; aspect-ratio:1/1; height:100%;
@@ -1995,17 +2052,35 @@ const CSS = `
   line-height:1.14; margin:0 0 .55rem; color:#F4FAFF;
   text-shadow: 0 0 14px rgba(224,242,255,.66), 0 0 40px rgba(184,167,255,.55), 0 0 88px rgba(255,215,0,.18);
 }
+/* Same colour as the About Me heading, deliberately smaller than it. */
 .cc-cx-line {
   font-family:'Inter',system-ui,sans-serif; font-weight:300;
-  font-size:clamp(.82rem,1.9vw,.95rem); line-height:1.6;
-  color:rgba(224,242,255,.84); margin:0 0 1rem; max-width:44ch;
+  font-size:clamp(.85rem,1.7vw,1.05rem); line-height:1.6;
+  color:#F4FAFF; margin:0 0 1.1rem; max-width:46ch;
 }
-.cc-cx-btns { display:flex; flex-wrap:wrap; gap:.6rem; }
+/* One step down from the line above it, so the hierarchy reads
+   heading > line > bio > buttons. */
+.cc-cx-bio {
+  font-family:'Inter',system-ui,sans-serif; font-weight:300;
+  font-size:clamp(.78rem,1.35vw,.9rem); line-height:1.65;
+  color:rgba(224,242,255,.86); margin:0 0 1.1rem; max-width:62ch;
+}
+.cc-cx-btns { display:flex; flex-wrap:wrap; gap:.5rem; }
+
+/* Revealed address: drop the uppercase and the wide tracking, because an email
+   address rendered as DJCHEN@STANFORD.EDU is both ugly and harder to read. */
+.cc-mail { transition: background .4s ease, border-color .4s ease, box-shadow .4s ease, translate .4s cubic-bezier(.2,.7,.2,1); }
+.cc-mail-open {
+  text-transform:none; letter-spacing:.01em;
+  font-size:clamp(.78rem,1.4vw,.86rem);
+  border-color:#FFD700; background:rgba(255,215,0,.16);
+  box-shadow: 0 14px 34px rgba(10,25,47,.45), 0 0 26px rgba(255,215,0,.3), 0 0 0 1px rgba(255,255,255,.24) inset;
+}
 
 /* ---- glass buttons, mail, back-to-top: used inside the landed panel ---- */
 .cc-glass-btn {
-  display:inline-flex; align-items:center; gap:.8rem;
-  padding:1rem 1.8rem; border-radius:999px; text-decoration:none;
+  display:inline-flex; align-items:center; gap:.65rem;
+  padding:.95rem 1.4rem; border-radius:999px; text-decoration:none;
   font-family:'Inter',system-ui,sans-serif; font-weight:400;
   font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
   color:#FFFDF2;
@@ -2029,15 +2104,6 @@ const CSS = `
 .cc-glyph-fill { fill: rgba(255,215,0,.9); stroke:none; }
 .cc-glass-btn:hover .cc-glass-glyph svg { stroke:#FFE97A; filter: drop-shadow(0 0 8px rgba(255,215,0,.7)); }
 
-.cc-connect-mail {
-  display:inline-block; margin-top:1.1rem;
-  font-family:'Cormorant Garamond',serif; font-size:1.05rem;
-  letter-spacing:.06em; color: rgba(255,215,0,.85);
-  text-decoration:none; border-bottom:1px solid rgba(255,215,0,.35); padding-bottom:.25rem;
-  transition: color .3s ease, border-color .3s ease;
-}
-.cc-connect-mail:hover, .cc-connect-mail:focus-visible { color:#FFE97A; border-color:#FFE97A; outline:none; }
-.cc-connect-mail:focus-visible { outline:2px solid #FFD700; outline-offset:4px; }
 
 /* back to top, drawn as a falling star */
 .cc-startop {
@@ -2130,7 +2196,6 @@ const CSS = `
     gap:.7rem; padding-left:1.1rem; padding-right:1.1rem;
   }
   .cc-cx-say .cc-cx-line { margin-bottom:.8rem; }
-  .cc-connect-mail { margin-top:.8rem; }
   .cc-cx-stage .cc-startop { padding:.3rem .6rem; gap:.35rem; }
   .cc-cx-stage .cc-startop-art { width:1.9rem; height:1.9rem; }
   .cc-cx-shot { height:auto; width:34vw; max-width:120px; }
@@ -2138,7 +2203,7 @@ const CSS = `
   .cc-cx-line { margin-left:auto; margin-right:auto; }
   .cc-cx-btns { justify-content:center; }
   .cc-glass-btn { padding:.85rem 1.25rem; font-size:.68rem; }
-  .cc-cx-stage { height: clamp(38rem, 90vh, 46rem); }
+  .cc-cx-stage { height: clamp(48rem, 100vh, 60rem); }
 
   /* modal: reclaim the padding a phone can't spare */
   .cc-scrim { padding:.6rem; }
