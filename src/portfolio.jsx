@@ -431,15 +431,22 @@ const CARDS = [
     role: "Product Design Intern · team of four",
     readMore: { label: "View Slide Deck", href: "https://canva.link/lpnreffab0yx1fd" },
     credits: [
-      { label: "Timeline", value: "May – August 2025" },
+      { label: "Timeline", value: "May – August 2026" },
       { label: "Product manager", value: "Bennett Nepomuk" },
       { label: "Designers", value: "Derrick Chen, Thao Vy, Nathan Rodriguez" },
-      { label: "My role", value: "Recruiting and interviewing users, lo-fi wireframes and features, usability testing" },
+      { label: "My role", value: "Owned the map directory from lo-fi wireframes to hi-fi prototype · 4 user interviews · usability testing on UserTesting" },
     ],
     summary: [
-      "The **Montana Arts Council** is the state agency, founded in 1965, charged with developing the creative potential of every Montanan: individual artists, community organizations, healthcare and senior programs, veterans' programs, tourism agencies, educators, and policymakers.",
-      "Montana is the **fourth-largest state** by area and one of the **least** densely populated, and its arts sector fragmented as a result. No single resource aggregated the artists, organizations, and programming spread across its rural regions, so emerging artists struggled to reach past their own towns and visitors, collaborators, and funders had no reliable way to find them.",
-      "We framed it as one question: how might we create a tool that helps Montanans **discover** other artists in Montana? I led the research and user testing process — recruiting and interviewing artists, arts organizers, and a publisher to learn how people currently find each other, why they travel within the state, and how artists promote their own work. Going from low fidelity, we shipped a final design inside MAC's existing design system.",
+      "**Mapping Montana's emerging art scene.** Montana is the **fourth-largest state** by area, and its population is growing fast. With that growth, an art scene is emerging across the state, often led by small towns. But there's no central place for Montanans to find these artists.",
+      "We framed the challenge as one question: how might we help Montanans **discover** other artists in Montana? I owned the map directory, taking it from low-fidelity wireframes to a high-fidelity prototype inside MAC's existing design system, and interviewed 4 artists and Montanans along the way.",
+    ],
+    story: [
+      { label: "Key decision", detail: "**Cities, not tourism regions.** Our first design filtered by the state's tourism regions. 5 of 6 testers found them confusing, so I made the case to the team and the client for filtering by city instead. In the next round, testers found an artist in under a minute." },
+      { label: "Key decision", detail: "**A map plus a directory.** 6 of 6 testers preferred a map paired with a searchable directory over a directory alone, so the map became the way into the directory." },
+      { label: "Key decision", detail: "**Pins on towns, not individual artists.** Pinning each artist would make big cities look crowded and small towns look empty. I pushed for marking towns instead, so every local art scene gets a place on the map.",
+        quote: { text: "Geographical distance is super important for life in Montana; it dictates our activities and economy. By displaying these artist hubs, the directory helps bring light into the bustling art scene in smaller towns.", by: "Artistic director, Montana arts organization" } },
+      { label: "Outcome", detail: "MAC's front-end developers are building the directory from my high-fidelity prototype, using it as their implementation guide.",
+        quote: { text: "It is so great that I can use the directory to create visibility for art in my town by registering myself!", by: "Montana-based opera performer" } },
     ],
     tags: ["UX Research", "User Interviews", "Usability Testing", "Information Architecture", "Wireframing", "Figma"],
     link: null,
@@ -461,25 +468,33 @@ const CARDS = [
   },
   {
     /* ---------------------------- EPATT --------------------------- */
-    title: "East Palo Alto Tennis",
+    title: "EPATT",
     epithet: "Class Project",
     note: "A productivity tool fueled by AI, giving lesson planners their evenings back.",
-    meta: "Design · 2026",
+    meta: "AI lesson planning · 2026",
     Art: ArtTennis,
     float: "cc-float-2",
     lift: "2.5rem",
     variant: "gallery",
-    role: "Design · team of six",
+    role: "Product Designer · team of six",
     /* TODO: no url supplied for this one yet — paste the case-study link here. */
     readMore: { label: "View Slide Deck", href: "https://canva.link/8ife551eo5ca010" },
     credits: [
       { label: "Timeline", value: "January – March 2026" },
       { label: "Product manager", value: "Asharah Jaman" },
       { label: "Designers", value: "Derrick Chen, Chloe Zhong, Sophia Jiang, Sky Flowers, Annie Lee" },
+      { label: "My role", value: "Synthesized 5 user interviews · early concept sketches · owned the lesson-planning screen to high fidelity" },
     ],
     summary: [
-      "East Palo Alto Tennis and Tutoring equips youth for college and career pathways through one-on-one tutoring, parent empowerment, enrichment, mentorship, coaching, and tennis instruction. Teachers at EPATT manage up to 100 students and their volunteer tutors to personalize study plans for each student.",
-      "Through the design process, I worked to interview key stakeholders and clients to pinpoint their needs and pain points. From there, I shared these insights as user personas that I prototyped alongside my peers to deliver a design of a productivity tool to help teachers manage all their students with the help of an AI tool.",
+      "**East Palo Alto Tennis and Tutoring** provides tennis and literacy tutoring to about 100 students in East Palo Alto. Teachers build lesson plans for the volunteer tutors, but the student data they need is split between IXL and i-Ready, so every plan starts with switching between two dashboards.",
+      "We asked: how might we help EPATT teachers plan lessons for tutors in **less time**? I synthesized 5 interviews with students, teachers, tutors and staff, sketched early concepts, and owned the lesson-planning screen from sketch to high fidelity.",
+    ],
+    story: [
+      { label: "What we learned", detail: "Teachers wanted AI to save them time, but they still wanted the final say on what reached tutors. They also wanted to keep access to IXL and i-Ready analytics, and to have student notes on hand while planning." },
+      { label: "Key decision", detail: "**AI drafts, teachers approve.** The AI combines each student's progress from IXL and i-Ready into a summary and a draft plan. On my lesson-planning screen, the teacher reviews and adjusts the plan before sending it, so nothing reaches a tutor without a teacher's sign-off." },
+      { label: "Key decision", detail: "**Keep the analytics.** Instead of replacing IXL and i-Ready with AI summaries, I pushed to build their analytics into the platform, so teachers can check the source data without leaving it." },
+      { label: "Key decision", detail: "**A student panel beside the plan.** Each student's history stays visible while the teacher plans." },
+      { label: "Outcome", detail: "We handed off our designs and findings from teachers to the CS52 student development team, who will build the platform." },
     ],
     tags: ["UX Research", "Need-finding", "AI Tooling", "Prototyping", "Product Design", "Figma"],
     link: null,
@@ -492,7 +507,7 @@ const CARDS = [
       { src: IMG["epatt-06"], Plate: PlateTicket, caption: "Three how-might-we questions: one place for the information, fast search, cheaper tutor development." },
       { src: IMG["epatt-07"], Plate: PlateFriction, caption: "Four design requirements — integrate existing platforms, connect teachers to tutors, stay legible to parents." },
       { src: IMG["epatt-08"], Plate: PlateStack, caption: "The problem in one screen: teachers crossing several tools to personalize plans for up to 100 students." },
-      { src: IMG["epatt-09"], Plate: PlateSketch, caption: "Paper lo-fi: a searchable student list, and a per-student view pulling IXL, Achieve3000, and iReady together." },
+      { src: IMG["epatt-09"], Plate: PlateSketch, caption: "Paper lo-fi: a searchable student list, and a per-student view pulling IXL, Achieve3000, and i-Ready together." },
       { src: IMG["epatt-10"], Plate: PlateTest, caption: "EPATT's teachers critiqued it and named what was missing: IEP and 504 documents, parent feedback, attendance history." },
       { src: IMG["epatt-11"], Plate: PlateProfile, caption: "Med-fi in Figma, starting with teacher sign-in." },
       { src: IMG["epatt-12"], Plate: PlateDirectory, caption: "The student list and the dashboard that replaced the tab-switching." },
@@ -506,21 +521,21 @@ const CARDS = [
   {
     /* -------------------------- SAP-A-SKILL ----------------------- */
     title: "Sap-a-Skill",
-    epithet: "Personal Project",
+    epithet: "Solo Build",
     note: "Teach a sapling what you picked up, and watch it grow as you do.",
-    meta: "Claude Project 2026",
+    meta: "AI prototype · 2026",
     Art: ArtSprout,
     float: "cc-float-3",
     lift: "0.75rem",
     variant: "build",
     layout: "wide",
-    role: "Personal Project · Claude Project",
+    role: "Solo build · designed and coded",
     credits: [
       { label: "Scope", value: "Education" },
     ],
     summary: [
-      "Sap-a-Skill is a journaling learning tool designed to help the every day learner document their learning in a way that provides evidence to their progress. When learners want to learn a skill they adopt a sapling that they can help grow when they start a new skill, hobby, or lecture material. Learners can directly see their learning progress with each session the sapling grows as they retrieve their new findings.",
-      "Learners can log into the application at the end of each day, a eureka moment, or after a duolingo lesson, to map on their progress of any findings they have had. Watch as the sapling grow with each step you take to document your learning journey!",
+      "Sap-a-Skill is a journaling learning tool designed to help the everyday learner document their learning in a way that provides evidence to their progress. When learners want to learn a skill they adopt a sapling that they can help grow when they start a new skill, hobby, or lecture material. Learners can directly see their learning progress with each session the sapling grows as they retrieve their new findings.",
+      "Learners can log into the application at the end of each day, a eureka moment, or after a Duolingo lesson, to map on their progress of any findings they have had. Watch as the sapling grow with each step you take to document your learning journey!",
     ],
     tags: ["Product Requirements", "Product Design", "Ed Tech", "Conversational UI", "Prompt Design", "Solo Build"],
     link: { label: "View on GitHub", href: "#" },
@@ -550,7 +565,7 @@ const CARDS = [
   {
     /* ------------------------- SILVERSMITHING --------------------- */
     title: "Silversmithing Project",
-    epithet: "Personal Project",
+    epithet: "Class Project",
     note: "Rings and pendants, forged and finished by hand at the bench.",
     meta: "Sterling · 2025",
     Art: ArtSilver,
@@ -558,7 +573,7 @@ const CARDS = [
     lift: "3.25rem",
     variant: "process",
     stage: "portrait",
-    role: "Personal practice · sterling silver",
+    role: "Class project · sterling silver",
     credits: [
       { label: "Material", value: "Sterling silver sheet, wire, and carving wax" },
       { label: "Methods", value: "Wax carving, casting, sawing, filing, forming, soldering, finishing" },
@@ -837,7 +852,7 @@ export default function ClowCardPortfolio() {
                           <path d="M60 34 Q76 44 76 60 Q76 76 60 86 Q68 70 68 60 Q68 50 60 34 Z" className="cc-art-fill" />
                         </svg>
                       </span>
-                      <span className="cc-back-word">Collect</span>
+                      <span className="cc-back-word">View project</span>
                     </span>
                   </span>
                 </button>
@@ -1384,6 +1399,28 @@ function CollectedCard({ card, onClose }) {
             </div>
           </div>
         </div>
+
+        {card.story && (
+          <section className="cc-below">
+            <p className="cc-below-label">Decisions and outcome</p>
+            <dl className="cc-tech">
+              {card.story.map((r, i) => (
+                <div key={i} className="cc-tech-row">
+                  <dt>{r.label}</dt>
+                  <dd>
+                    <Rich text={r.detail} />
+                    {r.quote && (
+                      <blockquote className="cc-quote">
+                        <p>“{r.quote.text}”</p>
+                        <cite>{r.quote.by}</cite>
+                      </blockquote>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
 
         {card.technical && (
           <section className="cc-below">
@@ -2158,6 +2195,18 @@ const CSS = `
 .cc-tech-row dd {
   margin:.45rem 0 0; font-family:'Inter',system-ui,sans-serif; font-weight:300;
   font-size:.86rem; line-height:1.65; color: rgba(240,248,255,.86);
+}
+
+.cc-quote {
+  margin:.85rem 0 0; padding:.1rem 0 .1rem .9rem; border-left:2px solid rgba(255,215,0,.55);
+}
+.cc-quote p {
+  margin:0; font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1.02rem; line-height:1.5; color:#FFFDF2;
+}
+.cc-quote cite {
+  display:block; margin-top:.4rem; font-style:normal; font-size:.74rem;
+  letter-spacing:.04em; color: rgba(240,248,255,.78);
 }
 
 .cc-process { list-style:none; margin:0; padding:0; display:grid; gap:.6rem; }
