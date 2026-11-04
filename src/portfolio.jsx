@@ -429,37 +429,34 @@ const CARDS = [
     lift: "0rem",
     variant: "gallery",
     role: "Product Design Intern · team of four",
-    readMore: { label: "View Slide Deck", href: "https://canva.link/lpnreffab0yx1fd" },
+    readMore: { label: "View Full Case Study", href: "https://canva.link/lpnreffab0yx1fd" },
+    /* shown above the Problem heading instead of in the credits column */
+    timeline: "May – August 2026",
     credits: [
-      { label: "Timeline", value: "May – August 2026" },
+      { label: "My role", value: "Owned the map directory from lo-fi wireframes to hi-fi prototypes, conducted four user interviews and usability testing on UserTesting with 6 participants" },
       { label: "Product manager", value: "Bennett Nepomuk" },
       { label: "Designers", value: "Derrick Chen, Thao Vy, Nathan Rodriguez" },
-      { label: "My role", value: "Owned the map directory from lo-fi wireframes to hi-fi prototype · 4 user interviews · usability testing on UserTesting" },
     ],
+    summaryLabel: "Problem",
     summary: [
       "**Mapping Montana's emerging art scene.** Montana is the **fourth-largest state** by area, and its population is growing fast. With that growth, an art scene is emerging across the state, often led by small towns. But there's no central place for Montanans to find these artists.",
-      "We framed the challenge as one question: how might we help Montanans **discover** other artists in Montana? I owned the map directory, taking it from low-fidelity wireframes to a high-fidelity prototype inside MAC's existing design system, and interviewed 4 artists and Montanans along the way.",
+      "We framed the challenge as one question: how might we help Montanans **discover** other artists in Montana?",
     ],
     story: [
-      { label: "Key decision", detail: "**Cities, not tourism regions.** Our first design filtered by the state's tourism regions. 5 of 6 testers found them confusing, so I made the case to the team and the client for filtering by city instead. In the next round, testers found an artist in under a minute." },
-      { label: "Key decision", detail: "**A map plus a directory.** 6 of 6 testers preferred a map paired with a searchable directory over a directory alone, so the map became the way into the directory." },
-      { label: "Key decision", detail: "**Pins on towns, not individual artists.** Pinning each artist would make big cities look crowded and small towns look empty. I pushed for marking towns instead, so every local art scene gets a place on the map.",
-        quote: { text: "Geographical distance is super important for life in Montana; it dictates our activities and economy. By displaying these artist hubs, the directory helps bring light into the bustling art scene in smaller towns.", by: "Artistic director, Montana arts organization" } },
-      { label: "Outcome", detail: "MAC's front-end developers are building the directory from my high-fidelity prototype, using it as their implementation guide.",
-        quote: { text: "It is so great that I can use the directory to create visibility for art in my town by registering myself!", by: "Montana-based opera performer" } },
+      { label: "Key decisions", detail: [
+        "**Cities, not tourism regions.** Our first design filtered by the state's tourism regions. 5 of 6 testers found them confusing, so I made the case to the team and the client for filtering by city instead. In the next round, testers found an artist in under a minute.",
+        "**A map plus a directory.** 6 of 6 testers preferred a map paired with a searchable directory over a directory alone, so the map became the way into the directory.",
+        "**Pins on towns, not individual artists.** Pinning each artist would make big cities look crowded and small towns look empty. I pushed for marking towns instead, so every local art scene gets a place on the map.",
+      ] },
+      { label: "Outcome", detail: "MAC's front-end developers are building the directory from my high-fidelity prototype, using it as their implementation guide." },
+    ],
+    testimonials: [
+      { text: "Geographical distance is super important for life in Montana; it dictates our activities and economy. By displaying these artist hubs, the directory helps bring light into the bustling art scene in smaller towns.", by: "Artistic director, Montana arts organization" },
+      { text: "It is so great that I can use the directory to create visibility for art in my town by registering myself!", by: "Montana-based opera performer" },
     ],
     tags: ["UX Research", "User Interviews", "Usability Testing", "Information Architecture", "Wireframing", "Figma"],
     link: null,
     slides: [
-      { src: IMG["mac-01"], Plate: PlateTitle, caption: "A statewide arts directory for the Montana Arts Council, built over one summer by a team of four." },
-      { src: IMG["mac-02"], Plate: PlateDoc, caption: "Who MAC is: a state agency since 1965, serving constituents from individual artists to state policymakers." },
-      { src: IMG["mac-03"], Plate: PlateState, caption: "The challenge — the fourth-largest state by area, one of the least dense, and no central record of who makes art here." },
-      { src: IMG["mac-04"], Plate: PlateTicket, caption: "How might we create a tool that helps Montanans discover other artists in Montana?" },
-      { src: IMG["mac-05"], Plate: PlateTable, caption: "Research goals, and the interviews behind them: artists, arts organizers, and a publisher." },
-      { src: IMG["mac-06"], Plate: PlateCards, caption: "Three personas — the council board member, the artist building a career, and the Montanan who travels for art." },
-      { src: IMG["mac-07"], Plate: PlateSketch, caption: "Iteration one: a landing screen offering two ways in, a searchable directory and a map." },
-      { src: IMG["mac-08"], Plate: PlateFriction, caption: "Iteration two: the split caused friction, and artist-level pins misrepresented the scene. One view, city pins instead." },
-      { src: IMG["mac-09"], Plate: PlateTest, caption: "Eight testers on UserTesting.com, live conversations, two prototypes compared on the same tasks." },
       { src: IMG["mac-10"], Plate: PlateDirectory, caption: "The shipped directory: search, filters for artist, organization, city and discipline, and a map of Montana's arts cities." },
       { src: IMG["mac-11"], Plate: PlateDirectory, caption: "Discovery for travellers — a stop in a nearby town becomes a reason to find new art." },
       { src: IMG["mac-12"], Plate: PlateProfile, caption: "Artist profiles: discipline, region, links, biography, and a gallery of work." },
@@ -478,42 +475,31 @@ const CARDS = [
     variant: "gallery",
     role: "Product Designer · team of six",
     /* TODO: no url supplied for this one yet — paste the case-study link here. */
-    readMore: { label: "View Slide Deck", href: "https://canva.link/8ife551eo5ca010" },
+    readMore: { label: "View Full Case Study", href: "https://canva.link/8ife551eo5ca010" },
+    /* shown above the Problem heading instead of in the credits column */
+    timeline: "January – March 2026",
     credits: [
-      { label: "Timeline", value: "January – March 2026" },
+      { label: "My role", value: "Synthesized five user interviews, sketched early concepts, and owned the lesson-planning screen to high fidelity" },
       { label: "Product manager", value: "Asharah Jaman" },
       { label: "Designers", value: "Derrick Chen, Chloe Zhong, Sophia Jiang, Sky Flowers, Annie Lee" },
-      { label: "My role", value: "Synthesized 5 user interviews · early concept sketches · owned the lesson-planning screen to high fidelity" },
     ],
+    summaryLabel: "Problem",
     summary: [
       "**East Palo Alto Tennis and Tutoring** provides tennis and literacy tutoring to about 100 students in East Palo Alto. Teachers build lesson plans for the volunteer tutors, but the student data they need is split between IXL and i-Ready, so every plan starts with switching between two dashboards.",
-      "We asked: how might we help EPATT teachers plan lessons for tutors in **less time**? I synthesized 5 interviews with students, teachers, tutors and staff, sketched early concepts, and owned the lesson-planning screen from sketch to high fidelity.",
+      "We asked: how might we help EPATT teachers plan lessons for tutors in **less time**?",
     ],
     story: [
       { label: "What we learned", detail: "Teachers wanted AI to save them time, but they still wanted the final say on what reached tutors. They also wanted to keep access to IXL and i-Ready analytics, and to have student notes on hand while planning." },
-      { label: "Key decision", detail: "**AI drafts, teachers approve.** The AI combines each student's progress from IXL and i-Ready into a summary and a draft plan. On my lesson-planning screen, the teacher reviews and adjusts the plan before sending it, so nothing reaches a tutor without a teacher's sign-off." },
-      { label: "Key decision", detail: "**Keep the analytics.** Instead of replacing IXL and i-Ready with AI summaries, I pushed to build their analytics into the platform, so teachers can check the source data without leaving it." },
-      { label: "Key decision", detail: "**A student panel beside the plan.** Each student's history stays visible while the teacher plans." },
+      { label: "Key decisions", detail: [
+        "**AI drafts, teachers approve.** The AI combines each student's progress from IXL and i-Ready into a summary and a draft plan. On my lesson-planning screen, the teacher reviews and adjusts the plan before sending it, so nothing reaches a tutor without a teacher's sign-off.",
+        "**Keep the analytics.** Instead of replacing IXL and i-Ready with AI summaries, I pushed to build their analytics into the platform, so teachers can check the source data without leaving it.",
+        "**A student panel beside the plan.** Each student's history stays visible while the teacher plans.",
+      ] },
       { label: "Outcome", detail: "We handed off our designs and findings from teachers to the CS52 student development team, who will build the platform." },
     ],
     tags: ["UX Research", "Need-finding", "AI Tooling", "Prototyping", "Product Design", "Figma"],
     link: null,
     slides: [
-      { src: IMG["epatt-01"], Plate: PlateTitle, caption: "East Palo Alto Tennis and Tutoring, January to March 2026 — a product manager and five designers." },
-      { src: IMG["epatt-02"], Plate: PlateDoc, caption: "EPATT's mission: equipping youth for college and career through tutoring, mentorship, coaching, and tennis." },
-      { src: IMG["epatt-03"], Plate: PlateTicket, caption: "The challenge statement — how can AI help EPATT support high school students outside regular tutor hours?" },
-      { src: IMG["epatt-04"], Plate: PlateCards, caption: "How EPATT is structured: one teacher over several tutors, each paired with a student, plus a coaching layer." },
-      { src: IMG["epatt-05"], Plate: PlateTable, caption: "Need-finding with Ben, an executive board member. Tutoring runs roughly $5,000 per student." },
-      { src: IMG["epatt-06"], Plate: PlateTicket, caption: "Three how-might-we questions: one place for the information, fast search, cheaper tutor development." },
-      { src: IMG["epatt-07"], Plate: PlateFriction, caption: "Four design requirements — integrate existing platforms, connect teachers to tutors, stay legible to parents." },
-      { src: IMG["epatt-08"], Plate: PlateStack, caption: "The problem in one screen: teachers crossing several tools to personalize plans for up to 100 students." },
-      { src: IMG["epatt-09"], Plate: PlateSketch, caption: "Paper lo-fi: a searchable student list, and a per-student view pulling IXL, Achieve3000, and i-Ready together." },
-      { src: IMG["epatt-10"], Plate: PlateTest, caption: "EPATT's teachers critiqued it and named what was missing: IEP and 504 documents, parent feedback, attendance history." },
-      { src: IMG["epatt-11"], Plate: PlateProfile, caption: "Med-fi in Figma, starting with teacher sign-in." },
-      { src: IMG["epatt-12"], Plate: PlateDirectory, caption: "The student list and the dashboard that replaced the tab-switching." },
-      { src: IMG["epatt-13"], Plate: PlateProfile, caption: "Details view — feedback, action items, tutor log, and task assignment in one place." },
-      { src: IMG["epatt-14"], Plate: PlateStack, caption: "Each action item carries its evidence: tutor log, session summary, session assessments." },
-      { src: IMG["epatt-15"], Plate: PlateTicket, caption: "Final decisions." },
       { src: IMG["epatt-16"], Plate: PlateDirectory, caption: "Manage all students at ease — progress across every student, with an AI task summarizer for planning." },
       { src: IMG["epatt-17"], Plate: PlateGrowth, caption: "All-in-one lesson planning: generate and assign tutor tasks without leaving the tool." },
     ],
@@ -591,13 +577,13 @@ const CARDS = [
       { src: IMG["silver-05"], Plate: PlateBench, caption: "Close view of hands guiding a jeweler's saw blade through sheet silver on the bench pin." },
     ],
     process: [
-      { title: "Ideation", detail: "Sketch on paper and decide what the piece has to survive. Daily wear rules out anything too thin or too sharp." },
-      { title: "Wax carving", detail: "For cast pieces the shape gets cut and filed in wax first. Wax forgives what metal will not, so this is where the design is still allowed to change." },
-      { title: "Casting", detail: "The wax is burned out and silver takes its place. What comes back is rough, oversized, and needs every step that follows." },
-      { title: "Layout and sawing", detail: "For fabricated pieces, scribe the shape onto flat stock and cut it with a jeweler's saw. Slow, vertical, and no undo." },
-      { title: "Filing and forming", detail: "File down to the scribed line, then hammer or bend to shape. Texture decisions get made here, not later." },
-      { title: "Soldering", detail: "Flux, heat, one joint at a time. Order of operations matters \u2014 a later joint can undo an earlier one." },
-      { title: "Finishing", detail: "Sand through the grits, then polish. The last decision is how much shine the piece actually wants." },
+      { title: "Ideation" },
+      { title: "Wax carving" },
+      { title: "Casting" },
+      { title: "Layout and sawing" },
+      { title: "Filing and forming" },
+      { title: "Soldering" },
+      { title: "Finishing" },
     ],
   },
 ];
@@ -767,7 +753,7 @@ export default function ClowCardPortfolio() {
             <div className="cc-seal cc-seal-outer" />
             <div className="cc-seal cc-seal-inner" />
             <div className="relative" style={{ zIndex: 1 }}>
-              <p className="cc-eyebrow">Stanford HCI · Class 2028</p>
+              <p className="cc-eyebrow">Stanford Human Computer Interaction · Class 2028</p>
               <h1 className="cc-name">
                 Hi, I&rsquo;m<span className="cc-name-break"> </span>Derrick.
               </h1>
@@ -807,7 +793,7 @@ export default function ClowCardPortfolio() {
             <p className="cc-eyebrow cc-eyebrow-left">The collection</p>
             <h2 className="cc-h2">Projects</h2>
             <p className="cc-lede">
-              Each card holds one project: what it was for, who it was for, and what changed once it shipped.
+              Each card holds one project: what it was for, who it was for.
             </p>
           </div>
 
@@ -856,7 +842,6 @@ export default function ClowCardPortfolio() {
                     </span>
                   </span>
                 </button>
-                <p className="cc-slot-note">{c.note}</p>
               </div>
             ))}
           </div>
@@ -1138,7 +1123,7 @@ function Connect() {
           <div className="cc-cx-say">
             <h2 className="cc-cx-title">About Me</h2>
             <p className="cc-cx-line">
-              Stanford HCI &middot; Class 2028. Open to internships and new grad roles.
+              Stanford Human Computer Interaction &middot; Class 2028. Open to internships and new grad roles.
             </p>
             <p className="cc-cx-bio">
               I&rsquo;m Derrick and I study Computer Science on the Human Centered
@@ -1362,6 +1347,15 @@ function CollectedCard({ card, onClose }) {
             {!wide && <div className="cc-rail-head">{titleBlock}</div>}
 
             <div className="cc-rail-main">
+              {card.timeline && (
+                <dl className="cc-credits cc-rail-timeline">
+                  <div className="cc-credit">
+                    <dt>Timeline</dt>
+                    <dd>{card.timeline}</dd>
+                  </div>
+                </dl>
+              )}
+              {card.summaryLabel && <p className="cc-rail-label">{card.summaryLabel}</p>}
               {card.summary.map((para, i) => (
                 <p key={i} className="cc-rail-p"><Rich text={para} /></p>
               ))}
@@ -1408,7 +1402,9 @@ function CollectedCard({ card, onClose }) {
                 <div key={i} className="cc-tech-row">
                   <dt>{r.label}</dt>
                   <dd>
-                    <Rich text={r.detail} />
+                    {Array.isArray(r.detail)
+                      ? r.detail.map((d, j) => <p key={j} className="cc-tech-p"><Rich text={d} /></p>)
+                      : <Rich text={r.detail} />}
                     {r.quote && (
                       <blockquote className="cc-quote">
                         <p>“{r.quote.text}”</p>
@@ -1419,6 +1415,20 @@ function CollectedCard({ card, onClose }) {
                 </div>
               ))}
             </dl>
+          </section>
+        )}
+
+        {card.testimonials && (
+          <section className="cc-below">
+            <p className="cc-below-label">User testimonials</p>
+            <div className="cc-testimonials">
+              {card.testimonials.map((q, i) => (
+                <blockquote key={i} className="cc-quote">
+                  <p>“{q.text}”</p>
+                  <cite>{q.by}</cite>
+                </blockquote>
+              ))}
+            </div>
           </section>
         )}
 
@@ -1439,14 +1449,14 @@ function CollectedCard({ card, onClose }) {
 
         {card.process && (
           <section className="cc-below">
-            <p className="cc-below-label">Process, in order</p>
+            <p className="cc-below-label">Process</p>
             <ol className="cc-process">
               {card.process.map((s, i) => (
                 <li key={s.title} className="cc-step">
                   <span className="cc-step-n">{String(i + 1).padStart(2, "0")}</span>
                   <span className="cc-step-body">
                     <span className="cc-step-title">{s.title}</span>
-                    <span className="cc-step-detail">{s.detail}</span>
+                    {s.detail && <span className="cc-step-detail">{s.detail}</span>}
                   </span>
                 </li>
               ))}
@@ -1941,10 +1951,12 @@ const CSS = `
 .cc-body-split .cc-rail-side { margin-top:1.5rem; }
 
 .cc-credits { margin:0; padding:0 0 0 0; display:grid; gap:.7rem; }
-.cc-credit dt {
+.cc-credit dt, .cc-rail-label {
   font-family:'Inter',system-ui,sans-serif; font-weight:400; font-size:.56rem;
   letter-spacing:.2em; text-transform:uppercase; color: rgba(255,215,0,.75);
 }
+.cc-rail-label { margin:0 0 .45rem; }
+.cc-rail-timeline { margin-bottom:1.1rem; }
 .cc-credit dd { margin:.2rem 0 0; font-family:'Cormorant Garamond',serif; font-size:.98rem; line-height:1.4; color: rgba(240,248,255,.86); }
 
 .cc-tagblock { margin-top:1.6rem; }
@@ -1973,7 +1985,7 @@ const CSS = `
 .cc-rail-link:hover { color:#FFE97A; border-color:#FFE97A; gap:.9rem; }
 .cc-rail-link:focus-visible { outline:2px solid #FFD700; outline-offset:4px; }
 
-/* "View Slide Deck" — same treatment as the old case-study link.
+/* "View Full Case Study" — same treatment as the old case-study link.
    Only the spacing differs, since this one sits under the slideshow
    rather than at the end of the text rail. */
 .cc-more { margin-top:1.2rem; }
@@ -2209,6 +2221,13 @@ const CSS = `
   letter-spacing:.04em; color: rgba(240,248,255,.78);
 }
 
+.cc-tech-p { margin:0; }
+.cc-tech-p + .cc-tech-p { margin-top:.75rem; }
+
+.cc-testimonials { display:grid; gap:1.4rem; }
+@media (min-width:760px) { .cc-testimonials { grid-template-columns: repeat(2, minmax(0,1fr)); gap:1.5rem; } }
+.cc-testimonials .cc-quote { margin:0; }
+
 .cc-process { list-style:none; margin:0; padding:0; display:grid; gap:.6rem; }
 @media (min-width:760px) { .cc-process { grid-template-columns: repeat(2, minmax(0,1fr)); gap:.6rem 1.5rem; } }
 .cc-step {
@@ -2259,7 +2278,7 @@ const CSS = `
 
   /* the smallest labels are unreadable at arm's length on a phone */
   .cc-clow-meta { font-size:.62rem; letter-spacing:.1em; }
-  .cc-credit dt { font-size:.62rem; }
+  .cc-credit dt, .cc-rail-label { font-size:.62rem; }
   .cc-credit dd { font-size:1.02rem; }
   .cc-pill { font-size:.66rem; padding:.55rem .9rem; }
   .cc-count { font-size:.66rem; }
