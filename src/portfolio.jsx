@@ -862,7 +862,13 @@ export default function ClowCardPortfolio() {
                   ref={(el) => (cardRefs.current[i] = el)}
                   className={`cc-clow ${c.float}`}
                   onPointerEnter={() => warmSlides(c)}
-                  onFocus={() => warmSlides(c)}
+                  onFocus={(e) => {
+                    warmSlides(c);
+                    /* keyboard focus: bring the whole card and its focus ring
+                       into view, clear of the fixed nav (scroll-padding-top on
+                       html, plus the card's scroll-margin for the ring) */
+                    if (e.currentTarget.matches(":focus-visible")) e.currentTarget.scrollIntoView({ block: "nearest", behavior: "instant" });
+                  }}
                   onTouchStart={() => warmSlides(c)}
                   onClick={() => collect(i)}
                   aria-haspopup="dialog"
@@ -1672,28 +1678,35 @@ function CollectedCard({ card, onClose }) {
    sections below are reached by scrolling or tabbing as normal). */
 function MoreCue() {
   const ref = useRef(null);
-  const [fade, setFade] = useState(1);
-  const [lift, setLift] = useState(0);
 
+  /* Styles are written straight onto the element each frame: no React state,
+     so scrolling a case study never re-renders anything. */
   useEffect(() => {
     const el = ref.current;
     const scroller = el?.closest(".cc-scrim");
     const stage = el?.closest(".cc-stage-frame");
     if (!el || !scroller || !stage) return;
     let frame = 0;
+    let last = "";
     const read = () => {
       frame = 0;
       const vh = window.innerHeight;
       const s = stage.getBoundingClientRect();
       /* where the slides' bottom edge sits when the modal is scrolled to the top */
       const startBottom = Math.max(s.bottom + scroller.scrollTop, 1);
-      setFade(clamp(s.bottom / startBottom, 0, 1));
+      const fade = clamp(s.bottom / startBottom, 0, 1);
       /* on short screens the slides run past the bottom edge: lift the cue so
          it stays on screen, but never above the slides' own top */
       const gap = 14;
       const over = s.bottom - gap - (vh - 18);
       const maxLift = Math.max(s.height - el.offsetHeight - gap * 2, 0);
-      setLift(clamp(over, 0, maxLift));
+      const lift = Math.round(clamp(over, 0, maxLift));
+      const key = `${fade.toFixed(2)}|${lift}`;
+      if (key === last) return; /* nothing changed: touch nothing */
+      last = key;
+      el.style.opacity = fade.toFixed(2);
+      el.style.visibility = fade <= 0.02 ? "hidden" : "visible";
+      el.style.translate = `-50% ${-lift}px`;
     };
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(read); };
     read();
@@ -1709,14 +1722,8 @@ function MoreCue() {
     };
   }, []);
 
-  const gone = fade <= 0.02;
   return (
-    <div
-      ref={ref}
-      className="cc-below-cue"
-      style={{ opacity: fade, visibility: gone ? "hidden" : "visible", translate: `-50% ${-Math.round(lift)}px` }}
-      aria-hidden="true"
-    >
+    <div ref={ref} className="cc-below-cue" aria-hidden="true">
       <span>Read More Below</span>
       <svg viewBox="0 0 24 14">
         <path d="M2 2 L12 11 L22 2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -1851,6 +1858,9 @@ const CSS = `
 
 /* anchor jumps glide, unless the visitor asked for less motion */
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+/* keyboard focus and anchor jumps keep things clear of the fixed nav,
+   so a focused card's ring is never hidden under it */
+html { scroll-padding-top: calc(var(--cc-nav-h) + 1.25rem); }
 .cc-anchor { scroll-margin-top: calc(var(--cc-nav-h) - 2rem); }
 /* card glows reach past the screen edge on phones; clip them without making a scroll box */
 .cc-root { overflow-x: clip; }
@@ -1942,6 +1952,11 @@ const CSS = `
 .cc-modal-open .cc-back-sigil svg, .cc-modal-open .cc-cue svg, .cc-modal-open .cc-navcard-tilt,
 .cc-modal-open .cc-cx-card, .cc-modal-open .cc-cx-grab, .cc-modal-open .cc-cx-words,
 .cc-modal-open .cc-cx-chev svg { animation-play-state: paused !important; }
+/* Once the scrim has faded in, the star, cloud and dust layers are covered:
+   stop drawing them at all, so scrolling a case study only moves the modal.
+   They come back instantly on close. */
+.cc-layer, .cc-band-fade { transition: visibility 0s; }
+.cc-modal-open .cc-layer, .cc-modal-open .cc-band-fade { visibility:hidden; transition-delay:.4s; }
 .cc-name-break { display:inline; }
 @media (max-width: 640px) { .cc-name-break { display:block; height:0; } }
 .cc-tagline {
@@ -2051,6 +2066,9 @@ const CSS = `
 }
 .cc-clow:hover, .cc-clow:focus-visible { scale:1.055; outline:none; }
 .cc-clow:focus-visible { outline:2px solid #FFD700; outline-offset:10px; border-radius:6px; }
+/* room for the focus ring, its halo and the 5.5% focus scale when the card is
+   scrolled into view, so the ring is never cut off by the nav or the screen edge */
+.cc-clow { scroll-margin: 3.75rem 0; }
 /* dark halo on both sides of the gold ring, so it keeps 3:1 against any sky */
 .cc-clow:focus-visible::after {
   content:""; position:absolute; inset:-15px; border-radius:10px; pointer-events:none;
@@ -2274,8 +2292,9 @@ const CSS = `
 .cc-scrim {
   position:fixed; inset:0; z-index:60; display:flex; align-items:flex-start; justify-content:center;
   padding:1.25rem;
-  background: radial-gradient(80% 60% at 50% 40%, rgba(42,75,140,.5), rgba(10,25,47,.88) 70%);
-  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  background: radial-gradient(80% 60% at 50% 40%, rgba(42,75,140,.66), rgba(10,25,47,.93) 70%);
+  /* no backdrop blur: the scrim is opaque enough on its own, and a full-screen
+     blur under a scrolling modal was the main source of case-study lag */
   animation: cc-scrim-in .35s ease both; overflow-y:auto;
 }
 @keyframes cc-scrim-in { from { opacity:0; } to { opacity:1; } }
@@ -2286,8 +2305,7 @@ const CSS = `
   border:1px solid rgba(255,215,0,.55);
   background:
     linear-gradient(165deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.06) 45%, rgba(184,167,255,.16) 100%),
-    rgba(16,34,64,.66);
-  backdrop-filter: blur(12px) saturate(1.1); -webkit-backdrop-filter: blur(12px) saturate(1.1);
+    rgba(16,34,64,.98);
   box-shadow: 0 40px 120px rgba(10,25,47,.7), 0 0 70px rgba(255,215,0,.22), 0 0 0 1px rgba(255,255,255,.22) inset;
   animation: cc-modal-in .5s cubic-bezier(.2,.8,.2,1) both;
 }
@@ -2304,7 +2322,6 @@ const CSS = `
   width:2.6rem; height:2.6rem; border-radius:999px;
   display:flex; align-items:center; justify-content:center; cursor:pointer;
   border:1px solid rgba(255,215,0,.65); background: rgba(255,255,255,.1);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 0 18px rgba(255,215,0,.25), 0 0 0 1px rgba(255,255,255,.2) inset;
   transition: rotate .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease, border-color .4s ease, background .4s ease;
 }
@@ -2355,7 +2372,6 @@ const CSS = `
   position:absolute; top:50%; translate:0 -50%; width:2.4rem; height:2.4rem;
   border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center;
   border:1px solid rgba(255,215,0,.55); background: rgba(10,25,47,.62);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   transition: background .35s ease, box-shadow .35s ease, border-color .35s ease, scale .35s ease;
 }
 .cc-nav svg { width:1rem; fill:none; stroke: rgba(255,215,0,.95); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
@@ -2442,7 +2458,6 @@ const CSS = `
   letter-spacing:.12em; text-transform:uppercase; color: var(--cc-text-meta);
   padding:.5rem .85rem; border-radius:999px; cursor:default;
   border:1px solid rgba(255,215,0,.42); background: rgba(255,255,255,.1);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 0 0 1px rgba(255,255,255,.14) inset;
   transition: background .35s ease, border-color .35s ease, box-shadow .35s ease, translate .35s ease;
 }
