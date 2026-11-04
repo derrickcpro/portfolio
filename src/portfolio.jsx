@@ -833,6 +833,7 @@ export default function ClowCardPortfolio() {
                   onClick={() => collect(i)}
                   aria-haspopup="dialog"
                   aria-label={`${c.title} — open case study`}
+                  aria-describedby={`cc-note-${i}`}
                 >
                   <span className="cc-aura" aria-hidden="true" />
                   <span className={`cc-flipper ${flipped === i ? "cc-flipped" : ""}`}>
@@ -864,6 +865,7 @@ export default function ClowCardPortfolio() {
                     </span>
                   </span>
                 </button>
+                <p id={`cc-note-${i}`} className="cc-slot-note">{c.note}</p>
               </div>
             ))}
           </div>
@@ -1882,9 +1884,19 @@ const CSS = `
   .cc-slot { margin-top: var(--cc-lift, 0rem); }
 }
 .cc-slot { width:100%; max-width:17rem; }
+/* the one-liner under each card: light text for the darker dawn, with a tight
+   shadow (not a glow) so it stays crisp if a cloud drifts behind it */
 .cc-slot-note {
-  font-family:'Cormorant Garamond',serif; font-size:1rem; line-height:1.5;
-  color: rgba(10,25,47,.92); margin:1.1rem .25rem 0; text-align:center; text-wrap: balance;
+  font-family:'Cormorant Garamond',serif; font-weight:500; font-size:1.08rem; line-height:1.45;
+  color: var(--cc-text-soft); text-shadow: 0 1px 3px rgba(10,25,47,.65);
+  margin:1.15rem .25rem 0; text-align:center; text-wrap: balance;
+  position:relative; isolation:isolate;
+}
+/* same soft night glow as the Projects intro: this line sits low on the
+   screen, where the dawn is brightest */
+.cc-slot-note::before {
+  content:""; position:absolute; inset:-.5rem -.9rem; z-index:-1; pointer-events:none;
+  border-radius:50%; background: rgba(10,25,47,.55); filter: blur(16px);
 }
 
 .cc-clow {
@@ -2015,11 +2027,13 @@ const CSS = `
   border-bottom:1px solid rgba(255,215,0,.22);
   box-shadow: 0 10px 28px rgba(10,25,47,.28);
 }
+/* full width on every screen: card + Resume pinned to the left edge,
+   Case Studies + About Me pinned to the right; the gutter grows with the screen */
 .cc-navbar-in {
-  max-width:72rem; height:var(--cc-nav-h); margin:0 auto;
+  width:100%; height:var(--cc-nav-h);
   display:flex; align-items:center; justify-content:space-between; gap:1rem;
-  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
-  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  padding-left: max(clamp(1rem, 2.5vw, 2.5rem), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(1rem, 2.5vw, 2.5rem), env(safe-area-inset-right, 0px));
 }
 
 /* the miniature card: a real button, 44px hit area, card drawn inside it */
