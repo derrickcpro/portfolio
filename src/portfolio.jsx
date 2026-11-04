@@ -439,7 +439,7 @@ const CARDS = [
     ],
     summaryLabel: "Problem",
     summary: [
-      "**Mapping Montana's emerging art scene.** Montana is the **fourth-largest state** by area, and its population is growing fast. With that growth, an art scene is emerging across the state, often led by small towns. But there's no central place for Montanans to find these artists.",
+      "**Mapping Montana's emerging art scene.** Montana is the **fourth-largest state** by area, and its population is growing fast. With that growth, an art scene is emerging across the state, often led by small towns. But there's no central place for Montanans to find these artists. The Montana Arts Council wants to bridge this gap between artists, artistic organizations and Montanans.",
       "We framed the challenge as one question: how might we help Montanans **discover** other artists in Montana?",
     ],
     story: [
@@ -695,8 +695,10 @@ export default function ClowCardPortfolio() {
   }, []);
 
   return (
-    <div className="relative w-full" style={{ background: "#0A192F" }}>
+    <div className="relative w-full cc-root" style={{ background: "#0A192F" }}>
       <style>{CSS}</style>
+
+      <NavBar />
 
       <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
         <div className="absolute inset-0 cc-sky-night" />
@@ -772,11 +774,11 @@ export default function ClowCardPortfolio() {
             <div className="cc-seal cc-seal-outer" />
             <div className="cc-seal cc-seal-inner" />
             <div className="relative" style={{ zIndex: 1 }}>
-              <p className="cc-eyebrow">Stanford Human Computer Interaction · Class 2028</p>
+              <p className="cc-eyebrow">Stanford HCI · Class 2028</p>
               <h1 className="cc-name">
                 Hi, I&rsquo;m<span className="cc-name-break"> </span>Derrick.
               </h1>
-              <p className="cc-tagline">Bringing needs into Deliverable Impactful Software</p>
+              <p className="cc-tagline">I design products that start with people&rsquo;s needs.</p>
             </div>
           </div>
         </div>
@@ -789,7 +791,7 @@ export default function ClowCardPortfolio() {
         </div>
       </header>
 
-      <section ref={galleryRef} className="relative px-6" style={{ zIndex: 2, paddingTop: "5rem", paddingBottom: "2rem" }}>
+      <section id="work" ref={galleryRef} className="relative px-6 cc-anchor" style={{ zIndex: 2, paddingTop: "5rem", paddingBottom: "2rem" }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none cc-band-fade" style={{ zIndex: 0 }}>
           <div className="absolute inset-0 cc-band-sky" />
           {band.map((c, i) => (
@@ -875,6 +877,122 @@ export default function ClowCardPortfolio() {
   );
 }
 
+/* ---------------------------- navigation ----------------------------
+   A fixed bar: a miniature tarot card on the left that flips on click
+   (front: the contact card's star, back: the project cards' sigil), and
+   two anchor links on the right. It sits above page content (z 50) but
+   under the case-study modal (z 60). */
+
+/* one place for the resume link: the nav and the About Me buttons both use it */
+const RESUME_URL = "https://docs.google.com/document/d/1JpxiE9R8AIgwGpqddn_0uD2h4ZaifvQu3H7LXZgjKeg/edit?usp=sharing";
+
+const NAV_LINKS = [
+  { id: "work", label: "Case Studies" },
+  { id: "about", label: "About Me" },
+];
+
+function NavBar() {
+  const [flipped, setFlipped] = useState(false);
+  const [active, setActive] = useState(null);
+
+  /* highlight the section the visitor is in */
+  useEffect(() => {
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      const vh = window.innerHeight;
+      const about = document.getElementById("about");
+      const work = document.getElementById("work");
+      let next = null;
+      if (about && about.getBoundingClientRect().top < vh * 0.55) next = "about";
+      else if (work) {
+        const r = work.getBoundingClientRect();
+        if (r.top < vh * 0.5 && r.bottom > vh * 0.2) next = "work";
+      }
+      setActive(next);
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(read); };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  /* About Me lives in the band that opens at the very bottom of the page,
+     so this scrolls all the way down and moves focus into the band, which
+     opens it. The href still points at #about for new tabs and no-JS. */
+  const goAbout = (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault();
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: reduced() ? "auto" : "smooth" });
+    history.replaceState(null, "", "#about");
+    document.getElementById("about-title")?.focus({ preventScroll: true });
+  };
+
+  return (
+    <nav className="cc-navbar" aria-label="Primary">
+      <div className="cc-navbar-in">
+        <div className="cc-navleft">
+        <button
+          type="button"
+          className={`cc-navcard ${flipped ? "cc-navcard-flipped" : ""}`}
+          onClick={() => setFlipped((f) => !f)}
+          aria-pressed={flipped}
+          aria-label="Flip the card"
+        >
+          <span className="cc-navcard-tilt" aria-hidden="true">
+            <span className="cc-navcard-inner">
+              <span className="cc-navcard-face cc-navcard-front">
+                <Ornaments />
+                <svg viewBox="0 0 60 60" className="cc-navcard-glyph">
+                  <path className="cc-glyph-fill" d="M30 7 L33.6 22.4 L49 26 L33.6 29.6 L30 45 L26.4 29.6 L11 26 L26.4 22.4 Z" />
+                  <path className="cc-glyph-fill" d="M46 36 L47.7 41 L52.7 42.7 L47.7 44.4 L46 49.4 L44.3 44.4 L39.3 42.7 L44.3 41 Z" />
+                  <path className="cc-glyph-fill" d="M14.5 38 L15.8 41.8 L19.6 43.1 L15.8 44.4 L14.5 48.2 L13.2 44.4 L9.4 43.1 L13.2 41.8 Z" />
+                </svg>
+              </span>
+              <span className="cc-navcard-face cc-navcard-back">
+                <Ornaments />
+                <svg viewBox="0 0 120 120" className="cc-navcard-sigil">
+                  <circle cx="60" cy="60" r="26" />
+                  <circle cx="60" cy="60" r="5" className="cc-art-fill" />
+                  <path d="M60 10 L60 28 M60 92 L60 110 M10 60 L28 60 M92 60 L110 60" />
+                  <path d="M60 34 Q76 44 76 60 Q76 76 60 86 Q68 70 68 60 Q68 50 60 34 Z" className="cc-art-fill" />
+                </svg>
+              </span>
+            </span>
+          </span>
+        </button>
+
+        <a className="cc-navlink cc-navlink-ext" href={RESUME_URL} target="_blank" rel="noopener noreferrer">
+          Resume
+          <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5 L8.5 3.5 M4.5 3.5 L8.5 3.5 L8.5 7.5" /></svg>
+          <span className="cc-sr"> (opens in a new tab)</span>
+        </a>
+        </div>
+
+        <ul className="cc-navlinks">
+          {NAV_LINKS.map((l) => (
+            <li key={l.id}>
+              <a
+                href={`#${l.id}`}
+                className={`cc-navlink ${active === l.id ? "cc-navlink-on" : ""}`}
+                aria-current={active === l.id ? "location" : undefined}
+                onClick={l.id === "about" ? goAbout : undefined}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
+
 /* ------------------------- let's connect --------------------------
    A tilted card rests below the gallery. Dragging it down — or simply
    tapping it — slides it open into a full-bleed band carrying the
@@ -903,6 +1021,17 @@ const REACH = [
         <circle cx="8" cy="8.6" r="1.1" className="cc-glyph-fill" />
         <path d="M8 11.6 L8 17.5" />
         <path d="M12 17.5 L12 11.6 M12 14.2 Q12 11.6 14.6 11.6 Q16.6 11.6 16.6 14.4 L16.6 17.5" />
+      </svg>
+    ),
+  },
+  {
+    label: "Resume",
+    href: RESUME_URL,
+    glyph: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 2.5 L14.5 2.5 L19 7 L19 21.5 L6 21.5 Z" />
+        <path d="M14.5 2.5 L14.5 7 L19 7" />
+        <path d="M9 11.5 L16 11.5 M9 14.5 L16 14.5 M9 17.5 L13.5 17.5" />
       </svg>
     ),
   },
@@ -947,7 +1076,7 @@ function Connect() {
      drags or taps the card, and it takes over while it isn't null. */
   const [scrollP, setScrollP] = useState(0);
   const [manual, setManual] = useState(null);
-  const [box, setBox] = useState({ w: 1200, h: 440 });
+  const [box, setBox] = useState({ w: 1200, h: 440, vh: 900 });
   const [imgFailed, setImgFailed] = useState(false);
   const [mailOpen, setMailOpen] = useState(false);
 
@@ -966,7 +1095,7 @@ function Connect() {
   useEffect(() => {
     const measure = () => {
       const el = stageRef.current;
-      if (el) setBox({ w: el.clientWidth, h: el.clientHeight });
+      if (el) setBox({ w: el.clientWidth, h: el.clientHeight, vh: window.innerHeight });
     };
     /* Two stages, deliberately.
 
@@ -1031,11 +1160,17 @@ function Connect() {
 
   /* The band is sized to its contents, not to a thin strip. Below 640px the
      panel stacks, so it needs considerably more height. */
-  const stacked = box.w < 640;
-  const endH = clamp(
-    box.h * (stacked ? 0.86 : 0.62),
-    stacked ? 610 : 430,
-    stacked ? 700 : 520
+  const STACK_AT = 800; /* matches the (max-width: 799px) block in the CSS */
+  const stacked = box.w < STACK_AT;
+  /* small laptops: side by side, but the text column is narrower, so the bio runs longer */
+  const narrow = !stacked && box.w < 1100;
+  /* never taller than the screen below the fixed nav, so the whole band is
+     reachable; if the bio still doesn't fit, the panel scrolls inside */
+  const endH = Math.min(
+    stacked ? clamp(box.h * 0.92, 640, 760)
+      : narrow ? clamp(box.h * 0.9, 500, 720)
+      : clamp(box.h * 0.72, 470, 560),
+    box.vh - 64
   );
   /* Internal spacing scales with the band so the contents keep their
      proportions instead of rattling around in a taller box. */
@@ -1081,7 +1216,7 @@ function Connect() {
     window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" });
 
   return (
-    <footer ref={stageRef} className="cc-cx-stage">
+    <footer id="about" ref={stageRef} className="cc-cx-stage">
       <div
         className={`cc-cx-prompt ${resting ? "cc-cx-rest" : ""}`}
         style={{ opacity: 1 - seg(p, 0.01, 0.16), top: startTop + CX.H + 34 }}
@@ -1135,17 +1270,20 @@ function Connect() {
           </div>
 
           <div className="cc-cx-say">
-            <h2 className="cc-cx-title">About Me</h2>
+            {/* focus target for the nav's About Me link; focusing it opens the band */}
+            <h2 id="about-title" className="cc-cx-title" tabIndex={-1}>About Me</h2>
             <p className="cc-cx-line">
-              Stanford Human Computer Interaction &middot; Class 2028. Open to internships and new grad roles.
+              Stanford HCI &middot; Class 2028. Open to internships and new grad roles.
             </p>
             <p className="cc-cx-bio">
-              I&rsquo;m Derrick and I study Computer Science on the Human Centered
-              Interaction track. My values in all the work I do prioritize curiosity,
-              empathy and intercultural communication. All of which I believe are
-              important to understanding users and creating solutions that align with
-              their needs. Aside from those, I love reading and engaging with art,
-              inspiring my next silversmithing project!
+              I&rsquo;m a designer, developer, and a curious problem-solver studying
+              Computer Science on the Human-Computer Interaction track at Stanford. I love
+              figuring out how things work, how people interact with them the way they do
+              and improve their experiences. My work lives in the intersection of design,
+              technology and storytelling. I&rsquo;m drawn to projects that work to bring
+              people together and help express themselves. Outside of design, I&rsquo;m
+              always looking for ways to explore visual arts by working on a silversmithing
+              project or cross pattern.
             </p>
             <div className="cc-cx-btns">
               {REACH.map((r) => {
@@ -1603,7 +1741,15 @@ const CSS = `
   --cc-glass-card: rgba(18,30,72,.5);
   --cc-glass-sheen: linear-gradient(165deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.04) 45%, rgba(184,167,255,.1) 100%);
   --cc-glass-btn: rgba(16,34,64,.45);
+  --cc-nav-h: 3.75rem;                     /* fixed nav height; anchors clear it */
 }
+@media (max-width: 640px) { :root { --cc-nav-h: 3.25rem; } }
+
+/* anchor jumps glide, unless the visitor asked for less motion */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.cc-anchor { scroll-margin-top: calc(var(--cc-nav-h) - 2rem); }
+/* card glows reach past the screen edge on phones; clip them without making a scroll box */
+.cc-root { overflow-x: clip; }
 
 /* ---------- global brightness ----------
    Dims the sky only. It sits inside the fixed sky layer, behind all
@@ -1845,17 +1991,126 @@ const CSS = `
   border-top:1px solid rgba(255,215,0,.4); border-radius:0 0 3px 3px;
   background: linear-gradient(180deg, rgba(10,25,47,.18), rgba(10,25,47,.42));
 }
+/* title and meta share one face (Inter); weight and size carry the hierarchy */
 .cc-clow-title {
-  display:block; font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1rem;
-  line-height:1.25; letter-spacing:.09em; text-transform:uppercase; color:var(--cc-parchment);
+  display:block; font-family:'Inter',system-ui,sans-serif; font-weight:600; font-size:.9rem;
+  line-height:1.3; letter-spacing:.1em; text-transform:uppercase; color:var(--cc-parchment);
   text-wrap: balance;
   /* a tight dark shadow sharpens the letters; the old wide gold glow blurred them */
   text-shadow: 0 1px 2px rgba(10,25,47,.55);
 }
 .cc-clow-meta {
-  display:block; margin-top:.35rem; font-family:'Inter',system-ui,sans-serif; font-weight:500;
+  display:block; margin-top:.35rem; font-family:'Inter',system-ui,sans-serif; font-weight:300;
   font-size:.75rem; letter-spacing:.08em; line-height:1.45; text-transform:uppercase;
   text-wrap: balance; color: var(--cc-text-meta);
+}
+
+/* ---------- navigation ---------- */
+.cc-navbar {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  padding-top: env(safe-area-inset-top, 0px);
+  /* navy glass, dark enough for parchment text over the brightest dawn */
+  background: linear-gradient(180deg, rgba(10,25,47,.78), rgba(16,34,64,.66));
+  backdrop-filter: blur(14px) saturate(1.15); -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  border-bottom:1px solid rgba(255,215,0,.22);
+  box-shadow: 0 10px 28px rgba(10,25,47,.28);
+}
+.cc-navbar-in {
+  max-width:72rem; height:var(--cc-nav-h); margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+}
+
+/* the miniature card: a real button, 44px hit area, card drawn inside it */
+.cc-navcard {
+  position:relative; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  width:2.9rem; height:3.3rem; padding:0; border:0; background:none; cursor:pointer;
+  border-radius:6px;
+}
+.cc-navcard:focus-visible { outline:2px solid #FFD700; outline-offset:2px; }
+.cc-navcard-tilt {
+  display:block; width:1.9rem; height:3rem; rotate:-6deg; perspective:420px;
+  animation: cc-navbob 5.5s ease-in-out infinite;
+  transition: translate .35s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes cc-navbob { 0%,100% { translate:0 0; } 50% { translate:0 -2px; } }
+.cc-navcard:hover .cc-navcard-tilt { translate:0 -2px; }
+/* same flip easing as the project cards */
+.cc-navcard-inner {
+  position:relative; display:block; width:100%; height:100%;
+  transform-style:preserve-3d; transition: transform .62s cubic-bezier(.4,.05,.2,1);
+}
+.cc-navcard-flipped .cc-navcard-inner { transform: rotateY(180deg); }
+.cc-navcard-face {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  border-radius:3px; border:1px solid rgba(255,215,0,.7); overflow:hidden;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  background: var(--cc-glass-sheen), var(--cc-glass-card);
+  box-shadow: 0 4px 12px rgba(10,25,47,.45), 0 0 0 1px rgba(255,255,255,.18) inset, 0 0 10px rgba(255,215,0,.16) inset;
+  transition: border-color .35s ease, box-shadow .35s ease;
+}
+.cc-navcard-front { transform: rotateY(0deg); }
+.cc-navcard-back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(closest-side at 50% 45%, rgba(184,167,255,.3), rgba(184,167,255,0) 100%),
+    linear-gradient(165deg, rgba(10,25,47,.85) 0%, rgba(42,75,140,.75) 100%);
+}
+.cc-navcard:hover .cc-navcard-face, .cc-navcard:focus-visible .cc-navcard-face {
+  border-color:#FFD700; box-shadow: 0 6px 16px rgba(10,25,47,.5), 0 0 14px rgba(255,215,0,.45), 0 0 0 1px rgba(255,255,255,.24) inset;
+}
+/* the shared frame, scaled down to the miniature */
+.cc-navcard .cc-frame-rule { inset:2px; border-radius:2px; }
+.cc-navcard .cc-frame-rule-2 { inset:4px; }
+.cc-navcard .cc-curl { width:7px; height:7px; }
+.cc-navcard .cc-curl-tl { top:1px; left:1px; } .cc-navcard .cc-curl-tr { top:1px; right:1px; }
+.cc-navcard .cc-curl-bl { bottom:1px; left:1px; } .cc-navcard .cc-curl-br { bottom:1px; right:1px; }
+.cc-navcard .cc-curl svg { stroke-width:2.6; }
+.cc-navcard .cc-lozenge { width:4px; height:4px; }
+.cc-navcard .cc-lozenge-t { top:0; } .cc-navcard .cc-lozenge-b { bottom:0; }
+.cc-navcard-glyph { width:62%; fill:none; filter: drop-shadow(0 0 4px rgba(255,215,0,.55)); }
+.cc-navcard-sigil {
+  width:72%; fill:none; stroke: rgba(255,215,0,.92); stroke-width:6; stroke-linecap:round;
+  filter: drop-shadow(0 0 4px rgba(255,215,0,.5));
+}
+
+.cc-navlinks { display:flex; align-items:center; gap:clamp(.9rem, 3vw, 2.4rem); margin:0; padding:0; list-style:none; }
+/* left group: the card, then the resume link */
+.cc-navleft { display:flex; align-items:center; gap:clamp(.5rem, 2vw, 1.4rem); min-width:0; }
+.cc-navlink-ext { gap:.35rem; }
+.cc-navlink-ext::after { right:1.05rem; }
+.cc-navlink-ext svg { width:.6rem; height:.6rem; fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; }
+.cc-navlink {
+  position:relative; display:inline-flex; align-items:center; min-height:2.75rem; padding:0 .15rem;
+  font-family:'Inter',system-ui,sans-serif; font-weight:500; font-size:.74rem;
+  letter-spacing:.18em; text-transform:uppercase; text-decoration:none; white-space:nowrap;
+  color: var(--cc-text-meta); transition: color .3s ease;
+}
+/* gold underline grows from the centre on hover, focus and for the current section */
+.cc-navlink::after {
+  content:""; position:absolute; left:.15rem; right:.15rem; bottom:.55rem; height:1px;
+  background:#FFD700; box-shadow: 0 0 8px rgba(255,215,0,.6);
+  transform: scaleX(0); transition: transform .35s cubic-bezier(.2,.7,.2,1);
+}
+.cc-navlink:hover, .cc-navlink:focus-visible, .cc-navlink-on { color: var(--cc-gold-sky); }
+.cc-navlink:hover::after, .cc-navlink:focus-visible::after, .cc-navlink-on::after { transform: scaleX(1); }
+.cc-navlink:focus-visible { outline:2px solid #FFD700; outline-offset:4px; border-radius:3px; }
+
+@media (max-width: 640px) {
+  .cc-navbar-in { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .cc-navcard { width:2.75rem; height:2.9rem; }
+  .cc-navcard-tilt { width:1.55rem; height:2.45rem; }
+  .cc-navlink { font-size:.7rem; letter-spacing:.13em; }
+}
+/* small phones: three links plus the card still fit on one row */
+@media (max-width: 400px) {
+  .cc-navbar-in { gap:.5rem; }
+  .cc-navlinks { gap:.75rem; }
+  .cc-navleft { gap:.3rem; }
+  .cc-navlink { font-size:.66rem; letter-spacing:.07em; }
+  .cc-navlink-ext svg { display:none; }
+  .cc-navlink-ext::after { right:.15rem; }
 }
 
 /* ---------- modal ---------- */
@@ -2071,7 +2326,7 @@ const CSS = `
   /* Tall enough that the card is fully settled with scroll still remaining —
      that leftover scroll is the confirmation gesture. The card travels down
      through this space rather than it sitting empty. */
-  height: clamp(38rem, 68vh, 46rem);
+  height: clamp(40rem, 72vh, 47rem);
   background: linear-gradient(180deg,
     rgba(10,25,47,0) 0%,
     rgba(16,34,64,.62) 32%,
@@ -2132,12 +2387,15 @@ const CSS = `
 
 /* ---- the landed band ---- */
 .cc-cx-panel {
-  position:absolute; inset:0; display:grid; align-items:center;
+  /* "safe center": centred when it fits, top-aligned (and scrollable) when it doesn't */
+  position:absolute; inset:0; display:grid; align-items:center; align-content:safe center;
   grid-template-columns:auto minmax(0,1fr) auto;
   gap: clamp(1.4rem, 5vw, 4rem);
   padding: 0 clamp(1.4rem,4vw,3.5rem); /* vertical padding is set inline, scaled to band height */
-  /* If a very short viewport still can't fit the bio, scroll rather than clip. */
-  overflow-y:auto; overscroll-behavior:contain;
+  /* If a very short viewport still can't fit the bio, scroll rather than clip.
+     Scrolling must chain back to the page once the panel is at its end (or has
+     nothing to scroll), or the visitor gets stuck at the bottom of the site. */
+  overflow-y:auto; overscroll-behavior:auto;
 }
 .cc-cx-shot {
   position:relative; aspect-ratio:1/1; height:100%;
@@ -2155,6 +2413,8 @@ const CSS = `
   text-shadow:0 0 22px rgba(255,215,0,.4);
 }
 .cc-cx-say { text-align:left; min-width:0; }
+/* programmatic focus target (from the nav), not an interactive control */
+.cc-cx-title:focus { outline:none; }
 .cc-cx-title {
   font-family:'Michroma',sans-serif; font-size:clamp(1.05rem,2.8vw,1.9rem);
   line-height:1.14; margin:0 0 .55rem; color:#F4FAFF;
@@ -2171,7 +2431,7 @@ const CSS = `
 .cc-cx-bio {
   font-family:'Inter',system-ui,sans-serif; font-weight:300;
   font-size:clamp(.78rem,1.35vw,.9rem); line-height:1.65;
-  color:rgba(224,242,255,.86); margin:0 0 1.1rem; max-width:62ch;
+  color:rgba(224,242,255,.86); margin:0 0 1.1rem; max-width:72ch;
 }
 .cc-cx-btns { display:flex; flex-wrap:wrap; gap:.5rem; }
 
@@ -2315,7 +2575,9 @@ const CSS = `
 /* ---------- mobile ---------- *//* ---------- mobile ---------- */
 /* Small-screen only. Desktop sizing is untouched — the site-wide type
    floor is a separate decision still awaiting sign-off. */
-@media (max-width: 640px) {
+/* The About Me band stacks below 800px: side by side, the bio column is too
+   narrow to fit. Keep this breakpoint in sync with STACK_AT in Connect(). */
+@media (max-width: 799px) {
   /* the landed band stacks: portrait, then text, then the star */
   .cc-cx-panel {
     grid-template-columns:1fr; grid-auto-rows:auto;
@@ -2325,13 +2587,17 @@ const CSS = `
   .cc-cx-say .cc-cx-line { margin-bottom:.8rem; }
   .cc-cx-stage .cc-startop { padding:.3rem .6rem; gap:.35rem; }
   .cc-cx-stage .cc-startop-art { width:1.9rem; height:1.9rem; }
-  .cc-cx-shot { height:auto; width:34vw; max-width:120px; }
+  /* fixed size: an aspect-ratio box with overflow:hidden can otherwise shrink
+     to nothing in a tight grid row and slide under the heading */
+  .cc-cx-shot { width:min(26vw, 100px); height:min(26vw, 100px); flex:none; }
   .cc-cx-say { text-align:center; }
   .cc-cx-line { margin-left:auto; margin-right:auto; }
   .cc-cx-btns { justify-content:center; }
   .cc-glass-btn { padding:.85rem 1.25rem; font-size:.68rem; }
   .cc-cx-stage { height: clamp(48rem, 100vh, 60rem); }
+}
 
+@media (max-width: 640px) {
   /* modal: reclaim the padding a phone can't spare */
   .cc-scrim { padding:.6rem; }
   .cc-modal { padding:1.15rem; border-radius:6px; }
@@ -2385,5 +2651,9 @@ const CSS = `
   .cc-clow, .cc-pill, .cc-glass-btn, .cc-rail-link, .cc-tech-row { transition-duration:.01ms !important; }
   .cc-clow:hover, .cc-clow:focus-visible { scale:1; }
   .cc-pill:hover, .cc-glass-btn:hover, .cc-glass-btn:focus-visible { translate:none; }
+  /* nav: no bob, instant flip and underline (the faces still never overlap) */
+  .cc-navcard-tilt { animation:none !important; transition-duration:.01ms !important; }
+  .cc-navcard:hover .cc-navcard-tilt { translate:none; }
+  .cc-navcard-inner, .cc-navlink, .cc-navlink::after { transition-duration:.01ms !important; }
 }
 `;
