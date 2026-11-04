@@ -596,6 +596,7 @@ export default function ClowCardPortfolio() {
   const [galleryIn, setGalleryIn] = useState(false);
   const [flipped, setFlipped] = useState(null);
   const [openIndex, setOpenIndex] = useState(null);
+  const [calm, setCalm] = useState(() => reduced());
 
   const galleryRef = useRef(null);
   const frame = useRef(0);
@@ -621,6 +622,14 @@ export default function ClowCardPortfolio() {
       if (frame.current) cancelAnimationFrame(frame.current);
       if (flipTimer.current) clearTimeout(flipTimer.current);
     };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const on = () => setCalm(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
   }, []);
 
   useEffect(() => {
@@ -650,6 +659,10 @@ export default function ClowCardPortfolio() {
   }, [openIndex]);
 
   const p = clamp(scrollY / Math.max(vh * 0.85, 1), 0, 1);
+  /* eased copy of p for the sky colour, so dawn starts and ends gently */
+  const pSky = p * p * (3 - 2 * p);
+  /* reduced motion: keep the colour change, drop the scroll parallax */
+  const mv = calm ? 0 : 1;
 
   const stars = useMemo(() => {
     const r = mulberry32(20260805);
@@ -687,9 +700,9 @@ export default function ClowCardPortfolio() {
 
       <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
         <div className="absolute inset-0 cc-sky-night" />
-        <div className="absolute inset-0 cc-sky-dawn" style={{ opacity: p }} />
+        <div className="absolute inset-0 cc-sky-dawn" style={{ opacity: pSky }} />
 
-        <div className="absolute inset-0" style={{ transform: `translate3d(0,${-scrollY * 0.1}px,0)`, opacity: 1 - p * 0.68 }}>
+        <div className="absolute inset-0" style={{ transform: `translate3d(0,${-scrollY * 0.1 * mv}px,0)`, opacity: 1 - pSky * 0.55 }}>
           {stars.map((s, i) => (
             <span
               key={i}
@@ -712,8 +725,9 @@ export default function ClowCardPortfolio() {
             style={{
               left: `${c.left}%`, top: `${c.top}%`,
               width: `${c.w}vw`, height: `${c.w * 0.34}vw`,
-              transform: `translate3d(0,${-scrollY * (c.near ? 0.42 : 0.24)}px,0)`,
-              opacity: (0.55 + p * 0.45) * c.op * (c.near ? 1.15 : 1),
+              transform: `translate3d(0,${-scrollY * (c.near ? 0.42 : 0.24) * mv}px,0)`,
+              /* clouds barely brighten at dawn, so they never form a white glow behind the cards */
+              opacity: (0.55 + pSky * 0.12) * c.op * (c.near ? 1.15 : 1),
               filter: `blur(${c.blur}px)`,
             }}
           >
@@ -721,7 +735,7 @@ export default function ClowCardPortfolio() {
           </div>
         ))}
 
-        <div className="absolute inset-0" style={{ transform: `translate3d(0,${-scrollY * 0.55}px,0)` }}>
+        <div className="absolute inset-0" style={{ transform: `translate3d(0,${-scrollY * 0.55 * mv}px,0)` }}>
           {dust.map((d, i) => (
             <span
               key={i}
@@ -736,14 +750,19 @@ export default function ClowCardPortfolio() {
           ))}
         </div>
 
-        <div className="absolute inset-0 cc-haze" style={{ opacity: 0.3 + p * 0.7 }} />
+        <div className="absolute inset-0 cc-haze" style={{ opacity: 0.3 + pSky * 0.7 }} />
+
+        {/* Brightness trim for the sky only: 10% darker, set by --cc-dim.
+            It lives here, behind every piece of content, so text, cards,
+            controls and the modal are never dimmed. */}
+        <div className="cc-dim" aria-hidden="true" />
       </div>
 
       <header className="cc-hero relative flex items-center justify-center px-6" style={{ zIndex: 2 }}>
         <div
           className="text-center"
           style={{
-            transform: `translate3d(0,${-scrollY * 0.3}px,0) scale(${1 - p * 0.07})`,
+            transform: `translate3d(0,${-scrollY * 0.3 * mv}px,0) scale(${1 - p * 0.07 * mv})`,
             opacity: clamp(1 - p * 1.5, 0, 1),
             filter: `blur(${p * 5}px)`,
             willChange: "transform, opacity",
@@ -771,7 +790,7 @@ export default function ClowCardPortfolio() {
       </header>
 
       <section ref={galleryRef} className="relative px-6" style={{ zIndex: 2, paddingTop: "5rem", paddingBottom: "2rem" }}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none cc-band-fade" style={{ zIndex: 0 }}>
           <div className="absolute inset-0 cc-band-sky" />
           {band.map((c, i) => (
             <div
@@ -780,7 +799,8 @@ export default function ClowCardPortfolio() {
               style={{
                 left: `${c.left}%`, top: `${c.top}%`,
                 width: `${c.w}vw`, height: `${c.w * 0.36}vw`,
-                opacity: c.op, filter: `blur(${c.blur}px)`,
+                /* softened: these sit directly behind the cards */
+                opacity: c.op * 0.45, filter: `blur(${c.blur}px)`,
               }}
             >
               <div className="cc-cloud" style={{ animationDuration: `${c.dur}s`, animationDelay: `${c.delay}s` }} />
@@ -789,7 +809,7 @@ export default function ClowCardPortfolio() {
         </div>
 
         <div className="relative w-full mx-auto" style={{ zIndex: 1, maxWidth: "72rem" }}>
-          <div className={`cc-reveal ${galleryIn ? "cc-in" : ""}`}>
+          <div className={`cc-intro cc-reveal ${galleryIn ? "cc-in" : ""}`}>
             <p className="cc-eyebrow cc-eyebrow-left">The collection</p>
             <h2 className="cc-h2">Projects</h2>
             <p className="cc-lede">
@@ -851,12 +871,6 @@ export default function ClowCardPortfolio() {
       <Connect />
 
       {openIndex !== null && <CollectedCard card={CARDS[openIndex]} onClose={release} />}
-
-      {/* Global brightness trim. Sits above every layer, including the modal,
-          and multiplies the whole composite by (1 - --cc-dim).
-          Currently 0.10 → the page renders at 90% brightness.
-          Set --cc-dim to 0 for full brightness, 0.2 for 80%, and so on. */}
-      <div className="cc-dim" aria-hidden="true" />
     </div>
   );
 }
@@ -1571,12 +1585,31 @@ function Ornaments() {
 /* ------------------------------------------------------------------ */
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
 
-/* ---------- global brightness ---------- */
-:root { --cc-dim: 0.10; }
+/* ---------- readability tokens ----------
+   Shared values for text and surfaces that must stay legible at every
+   point of the night-to-dawn scroll. Change them here, not per rule. */
+:root {
+  --cc-dim: 0.10;
+  --cc-parchment: #FFFDF2;
+  --cc-text-meta: rgba(255,253,242,.92);   /* small caps on cards */
+  --cc-text-soft: rgba(240,248,255,.9);    /* secondary copy on the sky */
+  --cc-gold-label: rgba(255,215,0,.95);    /* gold field labels */
+  --cc-gold-sky: #FFE97A;                  /* gold text placed straight on the sky */
+  --cc-label-size: .7rem;                  /* smallest label size (~11px) */
+  /* navy-tinted glass: still translucent, but dark enough that light text
+     reads the same over the night sky and the brightest dawn */
+  --cc-glass-card: rgba(18,30,72,.5);
+  --cc-glass-sheen: linear-gradient(165deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.04) 45%, rgba(184,167,255,.1) 100%);
+  --cc-glass-btn: rgba(16,34,64,.45);
+}
+
+/* ---------- global brightness ----------
+   Dims the sky only. It sits inside the fixed sky layer, behind all
+   content, so it never lowers the contrast of text or controls. */
 .cc-dim {
-  position: fixed; inset: 0; z-index: 999;
+  position: absolute; inset: 0;
   background: #000; opacity: var(--cc-dim);
   pointer-events: none;
 }
@@ -1586,14 +1619,22 @@ const CSS = `
     radial-gradient(120% 80% at 50% 0%, #17325C 0%, rgba(23,50,92,0) 62%),
     linear-gradient(180deg, #0A192F 0%, #14305A 52%, #2A4B8C 100%);
 }
+/* Dawn keeps the blue-to-lavender direction but tops out at a muted violet
+   instead of near-white, so light text and gold stay readable on it. */
 .cc-sky-dawn {
   background:
-    radial-gradient(110% 70% at 50% 100%, rgba(224,242,255,.55) 0%, rgba(224,242,255,0) 70%),
-    linear-gradient(180deg, #2A4B8C 0%, #5D6FB8 46%, #B8A7FF 78%, #E0F2FF 100%);
+    radial-gradient(110% 70% at 50% 100%, rgba(184,167,255,.2) 0%, rgba(184,167,255,0) 70%),
+    linear-gradient(180deg, #2A4B8C 0%, #3D4E9C 46%, #5550A4 78%, #5E56A8 100%);
   transition: opacity .12s linear;
 }
-.cc-haze { background: radial-gradient(90% 55% at 50% 108%, rgba(184,167,255,.45) 0%, rgba(184,167,255,0) 68%); }
-.cc-band-sky { background: linear-gradient(180deg, rgba(42,75,140,0) 0%, rgba(184,167,255,.22) 40%, rgba(224,242,255,.28) 100%); }
+.cc-haze { background: radial-gradient(90% 55% at 50% 108%, rgba(184,167,255,.3) 0%, rgba(184,167,255,0) 68%); }
+/* fades back out at the bottom so there is no seam where the Connect band starts */
+.cc-band-sky { background: linear-gradient(180deg, rgba(42,75,140,0) 0%, rgba(184,167,255,.12) 45%, rgba(184,167,255,.08) 80%, rgba(42,75,140,0) 100%); }
+/* the band's clouds fade in and out at its edges instead of being cut off */
+.cc-band-fade {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 70%, transparent 100%);
+}
 
 .cc-star { position: absolute; border-radius: 999px; animation: cc-twinkle linear infinite; }
 @keyframes cc-twinkle { 0%,100% { opacity:.18; transform: scale(.7); } 50% { opacity:1; transform: scale(1.25); } }
@@ -1615,8 +1656,9 @@ const CSS = `
 
 .cc-eyebrow {
   font-family:'Cormorant Garamond',serif; font-style:italic;
-  font-size: clamp(.85rem,2.1vw,1.05rem); letter-spacing:.16em;
-  color: rgba(255,215,0,.82); margin:0 0 1.1rem; text-align:center;
+  font-size: clamp(.85rem,2.1vw,1.05rem); letter-spacing:.16em; font-weight:500;
+  /* pale gold: small italic text sitting directly on the sky needs the extra lightness */
+  color: var(--cc-gold-sky); margin:0 0 1.1rem; text-align:center;
 }
 .cc-eyebrow-left { text-align:left; margin-bottom:.6rem; }
 .cc-name {
@@ -1639,9 +1681,9 @@ const CSS = `
 }
 .cc-h2 { font-family:'Michroma',sans-serif; font-size: clamp(1.4rem,4.2vw,2.4rem); color:#F4FAFF; margin:0; text-shadow: 0 0 26px rgba(184,167,255,.5); }
 .cc-lede {
-  font-family:'Inter',system-ui,sans-serif; font-weight:300;
+  font-family:'Inter',system-ui,sans-serif; font-weight:400;
   font-size: clamp(.95rem,2.2vw,1.05rem); line-height:1.65;
-  color: rgba(224,242,255,.82); max-width:46ch; margin:1rem 0 0;
+  color: var(--cc-text-soft); max-width:46ch; margin:1rem 0 0;
 }
 
 .cc-seal { position:absolute; border-radius:999px; pointer-events:none; }
@@ -1668,8 +1710,8 @@ const CSS = `
 .cc-cue {
   bottom:2.4rem; left:50%; transform: translateX(-50%);
   display:flex; flex-direction:column; align-items:center; gap:.7rem;
-  font-family:'Inter',system-ui,sans-serif; font-weight:300; font-size:.72rem;
-  letter-spacing:.22em; text-transform:uppercase; color: rgba(255,215,0,.7);
+  font-family:'Inter',system-ui,sans-serif; font-weight:400; font-size:.72rem;
+  letter-spacing:.22em; text-transform:uppercase; color: rgba(255,215,0,.9);
   transition: opacity .2s linear;
 }
 .cc-cue svg { width:22px; animation: cc-bob 2.6s ease-in-out infinite; }
@@ -1677,6 +1719,15 @@ const CSS = `
 
 .cc-reveal { opacity:0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
 .cc-reveal.cc-in { opacity:1; transform:none; }
+
+/* soft night-coloured glow behind the Projects intro, so drifting clouds
+   never wash out the heading, eyebrow and lede */
+.cc-intro { position:relative; isolation:isolate; width:fit-content; max-width:100%; }
+.cc-intro::before {
+  content:""; position:absolute; inset:-1.6rem -2.6rem -1.6rem -2.4rem; z-index:-1; pointer-events:none;
+  border-radius:50%; background: rgba(10,25,47,.6);
+  filter: blur(30px);
+}
 
 .cc-deck { display:grid; grid-template-columns:1fr; gap:3rem 1.75rem; margin-top:4rem; justify-items:center; }
 @media (min-width:640px) { .cc-deck { grid-template-columns: repeat(2, minmax(0,1fr)); } }
@@ -1699,6 +1750,11 @@ const CSS = `
 }
 .cc-clow:hover, .cc-clow:focus-visible { scale:1.055; outline:none; }
 .cc-clow:focus-visible { outline:2px solid #FFD700; outline-offset:10px; border-radius:6px; }
+/* dark halo on both sides of the gold ring, so it keeps 3:1 against any sky */
+.cc-clow:focus-visible::after {
+  content:""; position:absolute; inset:-15px; border-radius:10px; pointer-events:none;
+  border:3px solid rgba(10,25,47,.72); box-shadow: inset 0 0 0 6px rgba(10,25,47,.62);
+}
 @keyframes cc-f1 { 0%,100% { translate: 0 0; } 50% { translate: 0 -11px; } }
 @keyframes cc-f2 { 0%,100% { translate: 0 -4px; } 50% { translate: 0 -20px; } }
 @keyframes cc-f3 { 0%,100% { translate: 0 0; } 50% { translate: 0 -14px; } }
@@ -1724,9 +1780,9 @@ const CSS = `
   padding:1.15rem .9rem 1rem; border-radius:5px;
   border:1px solid rgba(255,215,0,.5);
   backface-visibility:hidden; -webkit-backface-visibility:hidden;
-  background:
-    linear-gradient(165deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.08) 45%, rgba(184,167,255,.14) 100%),
-    rgba(255,255,255,.1);
+  /* navy-tinted glass: the sheen keeps the glassy highlight, the tint keeps
+     the surface dark enough for light text over any part of the sky */
+  background: var(--cc-glass-sheen), var(--cc-glass-card);
   backdrop-filter: blur(16px) saturate(1.1); -webkit-backdrop-filter: blur(16px) saturate(1.1);
   box-shadow: 0 22px 48px rgba(10,25,47,.4), 0 0 0 1px rgba(255,255,255,.28) inset, 0 0 26px rgba(255,215,0,.14) inset;
   transition: box-shadow .45s ease, border-color .45s ease; overflow:hidden;
@@ -1781,18 +1837,25 @@ const CSS = `
 .cc-clow:hover .cc-art-svg { stroke:#FFE97A; filter: drop-shadow(0 0 14px rgba(255,215,0,.8)); }
 .cc-clow-epithet {
   display:block; font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:400;
-  font-size:.95rem; letter-spacing:.06em; color: rgba(255,253,242,.85); margin-bottom:.45rem;
+  font-size:1rem; letter-spacing:.06em; color: var(--cc-text-meta); margin-bottom:.45rem;
 }
-.cc-clow-banner { display:block; width:100%; text-align:center; padding:.5rem .3rem .1rem; border-top:1px solid rgba(255,215,0,.4); }
+/* a darker strip behind the title and meta, so they read on a stable ground */
+.cc-clow-banner {
+  display:block; width:100%; text-align:center; padding:.55rem .35rem .3rem;
+  border-top:1px solid rgba(255,215,0,.4); border-radius:0 0 3px 3px;
+  background: linear-gradient(180deg, rgba(10,25,47,.18), rgba(10,25,47,.42));
+}
 .cc-clow-title {
-  display:block; font-family:'Cormorant Garamond',serif; font-weight:500; font-size:.82rem;
-  line-height:1.3; letter-spacing:.13em; text-transform:uppercase; color:#FFFDF2;
-  text-shadow: 0 0 16px rgba(255,215,0,.45);
+  display:block; font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1rem;
+  line-height:1.25; letter-spacing:.09em; text-transform:uppercase; color:var(--cc-parchment);
+  text-wrap: balance;
+  /* a tight dark shadow sharpens the letters; the old wide gold glow blurred them */
+  text-shadow: 0 1px 2px rgba(10,25,47,.55);
 }
 .cc-clow-meta {
-  display:block; margin-top:.35rem; font-family:'Inter',system-ui,sans-serif; font-weight:300;
-  font-size:.58rem; letter-spacing:.14em; line-height:1.55; text-transform:uppercase;
-  text-wrap: balance; color: rgba(255,253,242,.6);
+  display:block; margin-top:.35rem; font-family:'Inter',system-ui,sans-serif; font-weight:500;
+  font-size:.75rem; letter-spacing:.08em; line-height:1.45; text-transform:uppercase;
+  text-wrap: balance; color: var(--cc-text-meta);
 }
 
 /* ---------- modal ---------- */
@@ -1897,8 +1960,8 @@ const CSS = `
   overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
 }
 .cc-show-bar { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin-top:.85rem; }
-.cc-count { flex:0 0 auto; font-family:'Michroma',sans-serif; font-size:.62rem; letter-spacing:.14em; color: rgba(255,215,0,.85); }
-.cc-count-sep { color: rgba(255,253,242,.4); margin:0 .1rem; }
+.cc-count { flex:0 0 auto; font-family:'Michroma',sans-serif; font-size:var(--cc-label-size); letter-spacing:.14em; color: var(--cc-gold-label); }
+.cc-count-sep { color: rgba(255,253,242,.75); margin:0 .1rem; }
 
 .cc-dots { display:flex; gap:.5rem; }
 .cc-dot {
@@ -1938,7 +2001,7 @@ const CSS = `
 .cc-rail { min-width:0; }
 .cc-rail-epithet { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; letter-spacing:.14em; color: rgba(255,215,0,.85); margin:0 0 .4rem; }
 .cc-rail-title { font-family:'Michroma',sans-serif; font-size: clamp(1.05rem,2.4vw,1.5rem); line-height:1.3; color:#FFFDF2; margin:0; text-shadow: 0 0 24px rgba(255,215,0,.35); }
-.cc-rail-role { font-family:'Inter',system-ui,sans-serif; font-weight:300; font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color: rgba(255,253,242,.62); margin:.7rem 0 0; }
+.cc-rail-role { font-family:'Inter',system-ui,sans-serif; font-weight:400; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color: rgba(255,253,242,.85); margin:.7rem 0 0; }
 .cc-rail-head { margin-bottom:1.1rem; }
 .cc-rail-main { padding-top:1.1rem; border-top:1px solid rgba(255,215,0,.28); }
 .cc-rail-p {
@@ -1952,19 +2015,19 @@ const CSS = `
 
 .cc-credits { margin:0; padding:0 0 0 0; display:grid; gap:.7rem; }
 .cc-credit dt, .cc-rail-label {
-  font-family:'Inter',system-ui,sans-serif; font-weight:400; font-size:.56rem;
-  letter-spacing:.2em; text-transform:uppercase; color: rgba(255,215,0,.75);
+  font-family:'Inter',system-ui,sans-serif; font-weight:500; font-size:var(--cc-label-size);
+  letter-spacing:.16em; text-transform:uppercase; color: var(--cc-gold-label);
 }
 .cc-rail-label { margin:0 0 .45rem; }
 .cc-rail-timeline { margin-bottom:1.1rem; }
 .cc-credit dd { margin:.2rem 0 0; font-family:'Cormorant Garamond',serif; font-size:.98rem; line-height:1.4; color: rgba(240,248,255,.86); }
 
 .cc-tagblock { margin-top:1.6rem; }
-.cc-tag-label { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.95rem; letter-spacing:.12em; color: rgba(255,215,0,.8); margin:0 0 .75rem; }
+.cc-tag-label { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.95rem; letter-spacing:.12em; color: var(--cc-gold-label); margin:0 0 .75rem; }
 .cc-tags { display:flex; flex-wrap:wrap; gap:.5rem; }
 .cc-pill {
-  font-family:'Inter',system-ui,sans-serif; font-weight:400; font-size:.62rem;
-  letter-spacing:.14em; text-transform:uppercase; color: rgba(255,253,242,.9);
+  font-family:'Inter',system-ui,sans-serif; font-weight:400; font-size:var(--cc-label-size);
+  letter-spacing:.12em; text-transform:uppercase; color: var(--cc-text-meta);
   padding:.5rem .85rem; border-radius:999px; cursor:default;
   border:1px solid rgba(255,215,0,.42); background: rgba(255,255,255,.1);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -2024,7 +2087,8 @@ const CSS = `
 .cc-cx-words {
   display:block; font-family:'Cormorant Garamond',serif; font-weight:500;
   font-size:clamp(1.15rem,3.2vw,1.7rem); letter-spacing:.05em; white-space:nowrap;
-  color:#FFD700; text-shadow:0 0 24px rgba(255,215,0,.55);
+  /* a dark halo under the gold keeps it readable where the sky is lightest */
+  color:#FFD700; text-shadow:0 1px 3px rgba(10,25,47,.7), 0 0 18px rgba(255,215,0,.3);
 }
 .cc-cx-chev { display:block; margin:1.6rem auto 0; }
 .cc-cx-chev svg {
@@ -2127,15 +2191,15 @@ const CSS = `
   padding:.95rem 1.4rem; border-radius:999px; text-decoration:none;
   font-family:'Inter',system-ui,sans-serif; font-weight:400;
   font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
-  color:#FFFDF2;
-  background: rgba(255,255,255,.1);
+  color:var(--cc-parchment);
+  background: linear-gradient(rgba(255,255,255,.06), rgba(255,255,255,.06)), var(--cc-glass-btn);
   border:1px solid rgba(255,255,255,.5);
   backdrop-filter: blur(16px) saturate(1.15); -webkit-backdrop-filter: blur(16px) saturate(1.15);
   box-shadow: 0 14px 34px rgba(10,25,47,.45), 0 0 0 1px rgba(255,255,255,.14) inset;
   transition: background .4s ease, border-color .4s ease, box-shadow .4s ease, translate .4s cubic-bezier(.2,.7,.2,1);
 }
 .cc-glass-btn:hover, .cc-glass-btn:focus-visible {
-  background: rgba(255,255,255,.19); border-color:#FFFFFF; translate:0 -3px; outline:none;
+  background: linear-gradient(rgba(255,255,255,.13), rgba(255,255,255,.13)), var(--cc-glass-btn); border-color:#FFFFFF; translate:0 -3px; outline:none;
   box-shadow: 0 20px 44px rgba(10,25,47,.5), 0 0 34px rgba(255,215,0,.34), 0 0 0 1px rgba(255,255,255,.3) inset;
 }
 .cc-glass-btn:focus-visible { outline:2px solid #FFD700; outline-offset:4px; }
@@ -2171,8 +2235,8 @@ const CSS = `
 }
 .cc-startop:hover .cc-startop-tail { opacity:1; }
 .cc-startop-label {
-  font-family:'Inter',system-ui,sans-serif; font-weight:300; font-size:.62rem;
-  letter-spacing:.22em; text-transform:uppercase; color:rgba(255,215,0,.72);
+  font-family:'Inter',system-ui,sans-serif; font-weight:500; font-size:var(--cc-label-size);
+  letter-spacing:.2em; text-transform:uppercase; color:var(--cc-gold-label);
   transition: color .35s ease;
 }
 .cc-startop:hover .cc-startop-label { color:#FFE97A; }
@@ -2201,8 +2265,8 @@ const CSS = `
 }
 .cc-tech-row:hover { border-color: rgba(255,215,0,.45); background: rgba(255,255,255,.1); }
 .cc-tech-row dt {
-  font-family:'Inter',system-ui,sans-serif; font-weight:500; font-size:.58rem;
-  letter-spacing:.2em; text-transform:uppercase; color: rgba(255,215,0,.85);
+  font-family:'Inter',system-ui,sans-serif; font-weight:500; font-size:var(--cc-label-size);
+  letter-spacing:.16em; text-transform:uppercase; color: var(--cc-gold-label);
 }
 .cc-tech-row dd {
   margin:.45rem 0 0; font-family:'Inter',system-ui,sans-serif; font-weight:300;
@@ -2235,8 +2299,8 @@ const CSS = `
   border-bottom:1px solid rgba(224,242,255,.12);
 }
 .cc-step-n {
-  flex:0 0 auto; font-family:'Michroma',sans-serif; font-size:.62rem;
-  color: rgba(255,215,0,.8); padding-top:.15rem; letter-spacing:.06em;
+  flex:0 0 auto; font-family:'Michroma',sans-serif; font-size:var(--cc-label-size);
+  color: var(--cc-gold-label); padding-top:.15rem; letter-spacing:.06em;
 }
 .cc-step-body { min-width:0; }
 .cc-step-title {
@@ -2277,13 +2341,13 @@ const CSS = `
   .cc-head { padding-right:2.9rem; margin-bottom:1.1rem; }
 
   /* the smallest labels are unreadable at arm's length on a phone */
-  .cc-clow-meta { font-size:.62rem; letter-spacing:.1em; }
-  .cc-credit dt, .cc-rail-label { font-size:.62rem; }
+  .cc-clow-meta { font-size:.78rem; }
+  .cc-credit dt, .cc-rail-label { font-size:.74rem; }
   .cc-credit dd { font-size:1.02rem; }
-  .cc-pill { font-size:.66rem; padding:.55rem .9rem; }
-  .cc-count { font-size:.66rem; }
-  .cc-rail-role { font-size:.66rem; }
-  .cc-tech-row dt, .cc-step-n { font-size:.64rem; }
+  .cc-pill { font-size:.74rem; padding:.55rem .9rem; }
+  .cc-count { font-size:.74rem; }
+  .cc-rail-role { font-size:.76rem; }
+  .cc-tech-row dt, .cc-step-n { font-size:.74rem; }
   .cc-rail-p, .cc-tech-row dd, .cc-step-detail { font-size:.92rem; }
 
   /* bigger tap targets for the carousel */
@@ -2317,5 +2381,9 @@ const CSS = `
   .cc-reveal { transition-duration:.01ms !important; opacity:1; transform:none; }
   .cc-flipper { transition-duration:.01ms !important; }
   .cc-scrim, .cc-modal, .cc-plate-next, .cc-plate-prev { animation-duration:.01ms !important; }
+  /* hover lifts and scaling become instant; colour and glow changes stay */
+  .cc-clow, .cc-pill, .cc-glass-btn, .cc-rail-link, .cc-tech-row { transition-duration:.01ms !important; }
+  .cc-clow:hover, .cc-clow:focus-visible { scale:1; }
+  .cc-pill:hover, .cc-glass-btn:hover, .cc-glass-btn:focus-visible { translate:none; }
 }
 `;
